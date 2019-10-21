@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
@@ -16,7 +18,12 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.techjs.thephotoalbum.beans.Login;
+import com.techjs.thephotoalbum.dao.UserDao;
+import com.techjs.thephotoalbum.dao.UserDaoImpl;
+import com.techjs.thephotoalbum.models.User;
 import com.techjs.thephotoalbum.utils.Constants;
+import com.techjs.thephotoalbum.utils.Gender;
 import com.techjs.thephotoalbum.utils.SQLQueries;
 import com.techjs.thephotoalbum.utils.SQLQueriesConstants;
 
@@ -43,6 +50,9 @@ public class ThePhotoAlbum implements ServletContextListener {
 			configureDataSource();
 			loadSQLQueries();
 			generateSchema();
+			UserDao dao = new UserDaoImpl((DataSource)sce.getServletContext().getAttribute(Constants.DATASOURCE),
+					(SQLQueries)sce.getServletContext().getAttribute(Constants.SQLQueries));
+			
 		} catch (IOException e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
@@ -70,8 +80,10 @@ public class ThePhotoAlbum implements ServletContextListener {
 	
 	private void loadSQLQueries() throws IOException {
 		InputStream schema_ddl = ThePhotoAlbum.class.getResourceAsStream("/sql/schema-ddl.properties");
+		InputStream queries = ThePhotoAlbum.class.getResourceAsStream("/sql/queries.properties");
 		Properties properties = new Properties();
 		properties.load(schema_ddl);
+		properties.load(queries);
 		logger.debug("Loaded SQL Properities : " + properties.toString());
 		SQLQueries sqlQueries = new SQLQueries();
 		sqlQueries.addQueries(properties);

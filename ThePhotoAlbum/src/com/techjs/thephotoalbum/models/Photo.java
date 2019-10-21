@@ -2,6 +2,7 @@ package com.techjs.thephotoalbum.models;
 
 import java.util.Date;
 
+import com.techjs.thephotoalbum.utils.ImageQuality;
 import com.techjs.thephotoalbum.utils.Orientation;
 
 public class Photo {
@@ -16,7 +17,7 @@ public class Photo {
 	private Integer height;
 	private Integer width;
 	private Orientation orientation;
-	
+	private ImageQuality quality;
 	
 	public Long getId() {
 		return id;
@@ -84,6 +85,14 @@ public class Photo {
 	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
 	}
+	
+	public ImageQuality getQuality() {
+		return quality;
+	}
+	public void setQuality(ImageQuality quality) {
+		this.quality = quality;
+	}
+	
 	@Override
 	public String toString() {
 		return "Photo [id=" + id + ", albumId=" + albumId + ", userId=" + userId + ", title=" + title + ", description="
