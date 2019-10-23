@@ -13,4 +13,5 @@ public interface AlbumDao {
 	void updateAlbum(Album album) throws SQLException;
 	void insertAlbum(Album album) throws SQLException;
 	void deleteAlbum(Long userId, Long albumId) throws SQLException;
+	byte[] getAlbumCover(Long userId, Long albumId) throws SQLException;
 }

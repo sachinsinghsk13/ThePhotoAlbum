@@ -148,4 +148,19 @@ public class AlbumDaoImpl implements AlbumDao {
 		connection.close();
 	}
 
+	@Override
+	public byte[] getAlbumCover(Long userId, Long albumId) throws SQLException {
+		Connection connection = dataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_ALBUM_COVER));
+		statement.setLong(1, userId);
+		statement.setLong(2, albumId);
+		ResultSet rs = statement.executeQuery();
+		byte[] data = null;
+		if (rs.next()) {
+			data = rs.getBytes(1);
+		}
+		connection.close();
+		return data;
+	}
+	
 }
