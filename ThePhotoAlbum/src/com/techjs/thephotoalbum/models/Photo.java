@@ -11,6 +11,7 @@ public class Photo {
 	private Long userId;
 	private String title;
 	private String description;
+	private Double fileSize;
 	private Date uploadDate;
 	private byte[] binaryData;
 	private byte[] thumbBinaryData;
@@ -93,6 +94,12 @@ public class Photo {
 		this.quality = quality;
 	}
 	
+	public Double getFileSize() {
+		return fileSize;
+	}
+	public void setFileSize(Double fileSize) {
+		this.fileSize = fileSize;
+	}
 	@Override
 	public String toString() {
 		return "Photo [id=" + id + ", albumId=" + albumId + ", userId=" + userId + ", title=" + title + ", description="

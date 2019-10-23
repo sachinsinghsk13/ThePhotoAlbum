@@ -3,7 +3,10 @@ package com.techjs.thephotoalbum.models;
 import java.util.Date;
 
 import com.techjs.thephotoalbum.utils.Gender;
-
+/**
+ * Represents a User Entity Model
+ * @author Sachin Singh
+ * */
 public class User {
 	private Long id;
 	private String name;
@@ -11,7 +14,9 @@ public class User {
 	private Gender gender;
 	private String email;
 	private String password;
-	
+	/**
+	 * Default constructor for creating a User.
+	 * */
 	public User() {
 		super();
 	}

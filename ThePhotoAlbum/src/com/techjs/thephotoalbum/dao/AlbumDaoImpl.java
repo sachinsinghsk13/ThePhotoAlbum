@@ -44,6 +44,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			album.setDescription(rs.getString(3));
 			album.setCreateTime(rs.getDate(4));
 			album.setLastPhotoUploadTime(rs.getDate(5));
+			album.setAlbumCover(rs.getBytes(6));
 			album.setUserId(id);
 			albums.add(album);
 		}
@@ -67,6 +68,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			album.setDescription(rs.getString(3));
 			album.setCreateTime(rs.getDate(4));
 			album.setLastPhotoUploadTime(rs.getDate(5));
+			album.setAlbumCover(rs.getBytes(6));
 			album.setUserId(id);
 			albums.add(album);
 		}
@@ -102,6 +104,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			album.setDescription(rs.getString(2));
 			album.setCreateTime(rs.getDate(3));
 			album.setLastPhotoUploadTime(rs.getDate(4));
+			album.setAlbumCover(rs.getBytes(5));
 			album.setId(albumId);
 			album.setUserId(userId);
 		}
@@ -146,21 +149,6 @@ public class AlbumDaoImpl implements AlbumDao {
 		statement.setLong(2, albumId);
 		statement.executeUpdate();
 		connection.close();
-	}
-
-	@Override
-	public byte[] getAlbumCover(Long userId, Long albumId) throws SQLException {
-		Connection connection = dataSource.getConnection();
-		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_ALBUM_COVER));
-		statement.setLong(1, userId);
-		statement.setLong(2, albumId);
-		ResultSet rs = statement.executeQuery();
-		byte[] data = null;
-		if (rs.next()) {
-			data = rs.getBytes(1);
-		}
-		connection.close();
-		return data;
 	}
 	
 }
