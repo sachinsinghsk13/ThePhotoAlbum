@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,32 +95,93 @@ public class PhotoDaoImpl implements PhotoDao {
 
 	@Override
 	public int getTotalNoOfPhotosInAlbum(Long userId, Long albumId) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+		Connection connection = dataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_TOTAL_NO_OF_PHOTOS_IN_ALBUM));
+		statement.setLong(1, userId);
+		statement.setLong(2, albumId);
+		ResultSet rs = statement.executeQuery();
+		int count = 0;
+		if (rs.next()) {
+			count = rs.getInt(1);
+		}
+		connection.close();
+		return count;
 	}
 
 	@Override
 	public Photo getPhoto(Long photoId, Album album) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Connection connection = dataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_PHOTO));
+		statement.setLong(1, album.getUserId());
+		statement.setLong(2, album.getId());
+		statement.setLong(3, photoId);
+		ResultSet rs = statement.executeQuery();
+		Photo photo = new Photo();
+		if (rs.next()) {
+			photo.setId(rs.getLong(1));
+			photo.setTitle(rs.getString(2));
+			photo.setDescription(rs.getString(3));
+			photo.setUploadDate(rs.getDate(4));
+			photo.setBinaryData(rs.getBytes(5));
+			photo.setThumbBinaryData(rs.getBytes(6));
+			photo.setWidth(rs.getInt(7));
+			photo.setHeight(rs.getInt(8));
+			photo.setOrientation(Orientation.valueOf(rs.getString(9)));
+			photo.setQuality(ImageQuality.valueOf(rs.getString(10)));
+			photo.setUserId(album.getUserId());
+			photo.setAlbumId(album.getId());
+		}
+		connection.close();
+		return photo;
 	}
 
 	@Override
 	public void updatePhoto(Photo photo, Album album) throws SQLException {
-		// TODO Auto-generated method stub
-
+		Connection connection = dataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.UPDATE_PHOTO));
+		statement.setString(1, photo.getTitle());
+		statement.setString(2, photo.getDescription());
+		statement.setLong(3, album.getUserId());
+		statement.setLong(4, album.getId());
+		statement.setLong(5, photo.getId());
+		statement.executeUpdate();
+		connection.close();
 	}
 
 	@Override
 	public void insertPhoto(Photo photo, Album album) throws SQLException {
-		// TODO Auto-generated method stub
-
+		Connection connection = dataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.INSERT_PHOTO), Statement.RETURN_GENERATED_KEYS);
+		statement.setLong(1, album.getUserId());
+		statement.setLong(2, album.getId());
+		statement.setString(3, photo.getTitle());
+		statement.setString(4, photo.getDescription());
+		statement.setDouble(5, photo.getFileSize());
+		statement.setBytes(6, photo.getBinaryData());
+		statement.setBytes(7, photo.getThumbBinaryData());
+		statement.setInt(8, photo.getWidth());
+		statement.setInt(9, photo.getHeight());
+		statement.setString(10, photo.getOrientation().toString());
+		statement.setString(11, photo.getQuality().toString());
+		statement.executeUpdate();
+		ResultSet rs = statement.getGeneratedKeys();
+		long key = 0;
+		if (rs.next()) {
+			key = rs.getLong(1);
+			photo.setId(key);
+		}
+		connection.close();
 	}
 
 	@Override
 	public void deletePhoto(Long photoId, Album album) throws SQLException {
-		// TODO Auto-generated method stub
-
+		Connection connection = dataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.DELETE_PHOTO));
+		statement.setLong(3, album.getUserId());
+		statement.setLong(4, album.getId());
+		statement.setLong(5, photoId);
+		statement.executeUpdate();
+		connection.close();
 	}
 
 }
