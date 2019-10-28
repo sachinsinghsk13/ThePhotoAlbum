@@ -18,6 +18,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.techjs.thephotoalbum.auth.EmailClient;
+import com.techjs.thephotoalbum.auth.GmailAuthenticator;
 import com.techjs.thephotoalbum.beans.Login;
 import com.techjs.thephotoalbum.dao.UserDao;
 import com.techjs.thephotoalbum.dao.UserDaoImpl;
@@ -50,8 +52,7 @@ public class ThePhotoAlbum implements ServletContextListener {
 			configureDataSource();
 			loadSQLQueries();
 			generateSchema();
-			UserDao dao = new UserDaoImpl((DataSource)sce.getServletContext().getAttribute(Constants.DATASOURCE),
-					(SQLQueries)sce.getServletContext().getAttribute(Constants.SQLQueries));
+			
 			
 		} catch (IOException e) {
 			logger.error(e.getMessage());
@@ -107,5 +108,23 @@ public class ThePhotoAlbum implements ServletContextListener {
 		connection.createStatement().execute(sqlQueries.getQuery(SQLQueriesConstants.DROP_MOBILE_UPLOAD_ALBUM_TRIGGER));
 		connection.createStatement().execute(sqlQueries.getQuery(SQLQueriesConstants.CREATE_MOBILE_UPLOAD_ALBUM_TRIGGER));
 		connection.close();
+	}
+	
+	private void setupGmailClient() {
+		InputStream mailConfig = ThePhotoAlbum.class.getResourceAsStream("/configs/javaMailConfig.properties");
+		InputStream authConfig = ThePhotoAlbum.class.getResourceAsStream("/configs/gmailAuthentication.properties");
+		Properties mailConfigProp = new Properties();
+		Properties authConfigProp = new Properties();
+		try {
+			mailConfigProp.load(mailConfig);
+			authConfigProp.load(authConfig);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		GmailAuthenticator authenticator = new GmailAuthenticator(authConfigProp.getProperty("email"), authConfigProp.getProperty("password"));
+		EmailClient emailClient = new EmailClient(mailConfigProp, authenticator);
+		servletContext.setAttribute(Constants.EMAIL_CLIENT, emailClient);
 	}
 }
