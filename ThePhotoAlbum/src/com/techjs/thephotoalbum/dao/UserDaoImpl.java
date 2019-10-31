@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
 			user.setId(resultSet.getLong(1));
 			user.setName(resultSet.getString(2));
 			user.setEmail(resultSet.getString(3));
-			user.setDob(resultSet.getDate(4));
+			user.setDob(resultSet.getString(4));
 			user.setGender(Gender.valueOf(Gender.class, resultSet.getString(5)));
 			users.add(user);
 		}
@@ -64,7 +64,7 @@ public class UserDaoImpl implements UserDao {
 			user.setId(rs.getLong(1));
 			user.setName(rs.getString(2));
 			user.setEmail(rs.getString(3));
-			user.setDob(rs.getDate(4));
+			user.setDob(rs.getString(4));
 			user.setGender(Gender.valueOf(rs.getString(5)));
 		}
 		connection.close();
@@ -89,7 +89,7 @@ public class UserDaoImpl implements UserDao {
 		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.INSERT_NEW_USER),Statement.RETURN_GENERATED_KEYS);
 		statement.setString(1, user.getName());
 		statement.setString(2, user.getEmail());
-		statement.setDate(3, new Date(user.getDob().getYear(),user.getDob().getMonth(), user.getDob().getDate()));
+		statement.setString(3, user.getDob());
 		statement.setString(4, user.getGender().toString());
 		statement.setString(5, user.getPassword());
 		statement.execute();

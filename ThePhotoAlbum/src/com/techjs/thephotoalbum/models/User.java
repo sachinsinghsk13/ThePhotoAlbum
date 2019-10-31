@@ -10,7 +10,7 @@ import com.techjs.thephotoalbum.utils.Gender;
 public class User {
 	private Long id;
 	private String name;
-	private Date dob;
+	private String dob;
 	private Gender gender;
 	private String email;
 	private String password;
@@ -21,7 +21,7 @@ public class User {
 		super();
 	}
 	
-	public User(Long id, String name, Date dob, Gender gender, String email, String password) {
+	public User(Long id, String name, String dob, Gender gender, String email, String password) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -44,10 +44,10 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getDob() {
+	public String getDob() {
 		return dob;
 	}
-	public void setDob(Date dob) {
+	public void setDob(String dob) {
 		this.dob = dob;
 	}
 	public Gender getGender() {

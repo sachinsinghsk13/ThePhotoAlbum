@@ -23,7 +23,8 @@ public class EmailClient implements OTPService {
 		MimeMessage message = new MimeMessage(session);
 		message.addRecipient(Message.RecipientType.TO,new InternetAddress(recipient));
 		message.setSubject("OTP for The Photo Album Registration");
-		message.setText("<p style=\"font-size:20pt\">Your OTP is  <b>" + otp + " </b></p>");
+		
+		message.setContent("<p style=\"font-size:20pt\">Your OTP is  <b>" + otp + " </b></p>", "text/html");
 		Transport.send(message);
 	}
 	

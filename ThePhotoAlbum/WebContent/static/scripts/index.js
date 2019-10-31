@@ -55,8 +55,7 @@ class RegistrationForm {
     constructor() {
         this.isEmailAvailable = true;
         this.form = $("#registration-form");
-        this.firstNameField = $("#reg-firstName");
-        this.lastNameField = $("#reg-lastName");
+        this.fullnameField = $("#reg-fullname");
         this.emailField = $("#reg-email");
         this.birthdayField = $("#reg-birthday");
         this.genderField = $("#reg-gender");
@@ -101,32 +100,20 @@ class RegistrationForm {
         });
     }
     validate(evt) {
-        const nameRegex = /^[A-Za-z]{3,15}$/;
+        const nameRegex = /^[A-Za-z\t]{3,15}$/;
         const EmailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         const passwordRegex = /^\w{4,8}$/;
-        let firstName = this.firstNameField.val();
-        if (!firstName || !nameRegex.test(firstName)) {
-            let msg = !firstName
-                ? "Please Enter Your First Name"
+        let fullname = this.fullnameField.val();
+        if (!fullname || !nameRegex.test(fullname)) {
+            let msg = !fullname
+                ? "Please Enter Your Name"
                 : "This Name is Not Valid";
-            this.showErrors(this.firstNameField, msg);
+            this.showErrors(this.fullnameField, msg);
             evt.preventDefault();
             return;
         }
         else
-            this.hideErrors(this.firstNameField);
-        let lastName = this.lastNameField.val();
-        if (!lastName || !nameRegex.test(lastName)) {
-            let msg = !lastName
-                ? "Please Enter Your Last Name"
-                : "This Name is Not Valid";
-            this.showErrors(this.lastNameField, msg);
-            evt.preventDefault();
-            return;
-        }
-        else
-            this.hideErrors(this.lastNameField);
-        
+            this.hideErrors(this.fullnameField);
         
         let email = this.emailField.val();
         if (!email || !EmailRegex.test(email)) {
