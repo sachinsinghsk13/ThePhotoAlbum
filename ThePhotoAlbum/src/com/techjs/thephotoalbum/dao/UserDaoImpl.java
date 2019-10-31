@@ -123,5 +123,16 @@ public class UserDaoImpl implements UserDao {
 		}
 		return (i == 1) ? true : false;
 	}
+	@Override
+	public boolean isEmailAvailble(String email) throws SQLException {
+		Connection connection = datasource.getConnection();
+		ResultSet rs = connection.createStatement().executeQuery("SELECT COUNT(*) FROM USERS WHERE EMAIL = \'" + email + "\';");
+		boolean result = true;
+		if (rs.next()) {
+			if (rs.getInt(1) == 1)
+				result = false;
+		}
+		return result;
+	}
 
 }

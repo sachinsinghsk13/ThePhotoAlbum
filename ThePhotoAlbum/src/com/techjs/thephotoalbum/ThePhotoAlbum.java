@@ -20,9 +20,15 @@ import org.slf4j.LoggerFactory;
 
 import com.techjs.thephotoalbum.auth.EmailClient;
 import com.techjs.thephotoalbum.auth.GmailAuthenticator;
+import com.techjs.thephotoalbum.beans.DataSourceAndQueries;
 import com.techjs.thephotoalbum.beans.Login;
+import com.techjs.thephotoalbum.dao.AlbumDao;
+import com.techjs.thephotoalbum.dao.AlbumDaoImpl;
+import com.techjs.thephotoalbum.dao.PhotoDao;
+import com.techjs.thephotoalbum.dao.PhotoDaoImpl;
 import com.techjs.thephotoalbum.dao.UserDao;
 import com.techjs.thephotoalbum.dao.UserDaoImpl;
+import com.techjs.thephotoalbum.models.Photo;
 import com.techjs.thephotoalbum.models.User;
 import com.techjs.thephotoalbum.utils.Constants;
 import com.techjs.thephotoalbum.utils.Gender;
@@ -52,7 +58,8 @@ public class ThePhotoAlbum implements ServletContextListener {
 			configureDataSource();
 			loadSQLQueries();
 			generateSchema();
-			
+			setupDao();
+			setupGmailClient();
 			
 		} catch (IOException e) {
 			logger.error(e.getMessage());
@@ -62,6 +69,20 @@ public class ThePhotoAlbum implements ServletContextListener {
 			e.printStackTrace();
 		}
 		
+	}
+
+	private void setupDao() {
+		DataSource dataSource = (DataSource) servletContext.getAttribute(Constants.DATASOURCE);
+		SQLQueries queries = (SQLQueries) servletContext.getAttribute(Constants.SQLQueries);
+		DataSourceAndQueries dsq = new DataSourceAndQueries();
+		dsq.setDataSource(dataSource);
+		dsq.setSqlQueries(queries);
+		UserDao userDao = new UserDaoImpl(dsq);
+		servletContext.setAttribute(Constants.USER_DAO, userDao);
+		AlbumDao albumDao = new AlbumDaoImpl(dsq);
+		servletContext.setAttribute(Constants.ALBUM_DAO, albumDao);
+		PhotoDao photoDao = new PhotoDaoImpl(dsq);
+		servletContext.setAttribute(Constants.PHOTO_DAO, photoDao);
 	}
 
 	private void configureDataSource() throws IOException {
@@ -127,4 +148,6 @@ public class ThePhotoAlbum implements ServletContextListener {
 		EmailClient emailClient = new EmailClient(mailConfigProp, authenticator);
 		servletContext.setAttribute(Constants.EMAIL_CLIENT, emailClient);
 	}
+	
+	
 }

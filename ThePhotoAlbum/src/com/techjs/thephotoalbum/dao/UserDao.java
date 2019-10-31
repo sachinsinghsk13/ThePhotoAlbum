@@ -13,5 +13,6 @@ public interface UserDao {
 	void insertUser(User user) throws SQLException;
 	void deleteUser(Long id) throws SQLException;
 	boolean isUserAuthenticated(Login login) throws SQLException;
+	boolean isEmailAvailble(String email) throws SQLException;
 
 }
