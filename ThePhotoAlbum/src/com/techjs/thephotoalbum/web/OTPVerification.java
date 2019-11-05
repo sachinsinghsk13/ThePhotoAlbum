@@ -2,6 +2,7 @@ package com.techjs.thephotoalbum.web;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import com.techjs.thephotoalbum.auth.NewUserRegistration;
 import com.techjs.thephotoalbum.dao.UserDao;
 import com.techjs.thephotoalbum.models.User;
+import com.techjs.thephotoalbum.presentation.AlertMessage;
 import com.techjs.thephotoalbum.utils.Constants;
 
 @WebServlet("/OTPVerification")
@@ -33,7 +35,11 @@ public class OTPVerification extends HttpServlet {
 			}
 		}
 		else {
-			response.getWriter().println("Registration Fail");
+			AlertMessage message = new AlertMessage();
+			message.setMessage("Invalid OTP, Try Again");
+			message.setType("danger");
+			request.setAttribute("alerts", Arrays.asList(message));
+			request.getRequestDispatcher("/otp-verify.jsp").forward(request, response);
 		}
 	}
 

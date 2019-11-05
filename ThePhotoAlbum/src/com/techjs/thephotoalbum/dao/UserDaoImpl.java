@@ -12,7 +12,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import com.techjs.thephotoalbum.beans.DataSourceAndQueries;
-import com.techjs.thephotoalbum.beans.Login;
+import com.techjs.thephotoalbum.beans.LoginCredential;
 import com.techjs.thephotoalbum.models.User;
 import com.techjs.thephotoalbum.utils.Gender;
 import com.techjs.thephotoalbum.utils.SQLQueries;
@@ -111,7 +111,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public boolean isUserAuthenticated(Login login) throws SQLException {
+	public boolean isUserAuthenticated(LoginCredential login) throws SQLException {
 		Connection connection = datasource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.AUTHENTICATE_USER));
 		statement.setString(1, login.getEmail());
@@ -133,6 +133,27 @@ public class UserDaoImpl implements UserDao {
 				result = false;
 		}
 		return result;
+	}
+	@Override
+	public User getUserByEmail(String email) throws SQLException {
+		User user = null;
+		try (Connection connection = datasource.getConnection()) {
+			try (PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_USER_BY_EMAIL))) {
+				statement.setString(1, email);
+				try (ResultSet rs = statement.executeQuery()) {
+					
+					if (rs.next()) {
+						user = new User();
+						user.setId(rs.getLong(1));
+						user.setName(rs.getString(2));
+						user.setEmail(rs.getString(3));
+						user.setDob(rs.getString(4));
+						user.setGender(Gender.valueOf(rs.getString(5)));
+					}
+				}
+			}
+		}
+		return user;
 	}
 
 }

@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import com.techjs.thephotoalbum.auth.EmailClient;
 import com.techjs.thephotoalbum.auth.GmailAuthenticator;
 import com.techjs.thephotoalbum.beans.DataSourceAndQueries;
-import com.techjs.thephotoalbum.beans.Login;
+import com.techjs.thephotoalbum.beans.LoginCredential;
 import com.techjs.thephotoalbum.dao.AlbumDao;
 import com.techjs.thephotoalbum.dao.AlbumDaoImpl;
 import com.techjs.thephotoalbum.dao.PhotoDao;

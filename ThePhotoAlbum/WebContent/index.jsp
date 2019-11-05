@@ -1,40 +1,36 @@
 <%@ taglib tagdir="/WEB-INF/tags/import" prefix="import"%>
 <%@ taglib tagdir="/WEB-INF/tags/components" prefix="comp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 <title>The Photo Album</title>
 <import:bootstrap4_3 />
+<import:stylesheet file="index.css"/>
 <import:script file="index.js"></import:script>
 </head>
 <body>
-	<comp:navigationbar />
-	<!-- Error Section -->
-	<section class="my-3">
-		<div class="container">
-
-			<div class="alert alert-danger">Waring</div>
-			<div class="alert alert-danger">Waring</div>
-
-		</div>
-	</section>
+	<comp:navigationbarIndex/>
+	<comp:hero-section/>
 	<!-- Login Section-->
 	<section class="my-3">
 		<div class="container shadow">
 			<div class="row mx-2">
 				<div class="col-lg-7 col-md-5 p-3">
-					<import:image file="index.jpg" cls="img-fluid"></import:image>
+					<import:image file="beach.jpg" cls="img-fluid"></import:image>
 				</div>
 				<div class="col-lg-5 col-md-7 p-3">
-					<form action="#" class=" p-4 bg-light" id="login-form">
+					<form action="${pageContext.request.contextPath}/Login"
+						method="POST" class=" p-4 bg-light" id="login-form">
 						<div class="form-group">
 							<label for="email">Email:</label>
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
-									<span class="input-group-text"><i
-										class="fas fa-user"></i></span>
+									<span class="input-group-text"><i class="fas fa-user"></i></span>
 								</div>
 								<input type="text" class="form-control"
 									placeholder="example@gmail.com" aria-label="Username"
@@ -56,7 +52,7 @@
 						</div>
 						<div class="custom-control custom-checkbox">
 							<input type="checkbox" class="custom-control-input" id="remember"
-								name="rememberme" /> <label
+								name="rememberme" value="YES" /> <label
 								class="custom-control-label text-dark" for="remember">Remember
 								Me</label>
 						</div>
@@ -69,8 +65,7 @@
 						</div>
 						<div class="form-group">
 							<a href="#create-account-form"
-								class="btn btn-success btn-block shadow-sm">Create
-								Account</a>
+								class="btn btn-success btn-block shadow-sm">Create Account</a>
 						</div>
 					</form>
 				</div>

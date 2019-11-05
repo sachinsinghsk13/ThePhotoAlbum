@@ -100,7 +100,7 @@ class RegistrationForm {
         });
     }
     validate(evt) {
-        const nameRegex = /^[A-Za-z\t]{3,15}$/;
+        const nameRegex = /^[A-Za-z ]{3,15}$/;
         const EmailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         const passwordRegex = /^\w{4,8}$/;
         let fullname = this.fullnameField.val();
@@ -161,6 +161,7 @@ class RegistrationForm {
             this.hideErrors(this.confirmPasswordField);
         if (!this.isEmailAvailable) {
             evt.preventDefault();
+            this.showErrors(this.emailField, "We've already an account with this email");
             return;
         }
     }
@@ -179,7 +180,16 @@ class RegistrationForm {
             .remove();
     }
 }
+
+function getHeroSectionHeight() {
+    return ($(window).height() - ($(window).height() * 20 )/100) + "px";
+}
+
 $(() => {
+	$('#hero-section').css('height',getHeroSectionHeight());
+	   $(window).on('resize', ()=> {
+	    $('#hero-section').css('height',getHeroSectionHeight());
+	   })
 	new LoginForm('login-form','login-email','login-password');
     new RegistrationForm();
 });

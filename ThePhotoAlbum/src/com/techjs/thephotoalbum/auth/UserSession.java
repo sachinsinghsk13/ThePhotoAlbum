@@ -1,35 +1,69 @@
 package com.techjs.thephotoalbum.auth;
 
+import java.sql.SQLException;
+
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
-/**
- * Application Lifecycle Listener implementation class UserSession
- *
- */
+import com.techjs.thephotoalbum.dao.UserDao;
+import com.techjs.thephotoalbum.models.User;
+
 @WebListener
 public class UserSession implements HttpSessionBindingListener {
+	private boolean userLoggedin;
+	private User currentUser;
+	private UserDao userDao;
+	
+    public UserSession(UserDao userDao) {
+        this.userDao = userDao;
+        this.userLoggedin = false;
+    }
 
-    /**
-     * Default constructor. 
-     */
+    
     public UserSession() {
-        // TODO Auto-generated constructor stub
+		super();
+	}
+
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+
+
+	public User getCurrentUser() {
+		return currentUser;
+	}
+
+
+	public void login(User user) {
+		this.currentUser = user;
+		this.userLoggedin = true;
+	}
+	
+	
+	public void logout() {
+		this.currentUser = null;
+		this.userLoggedin = false;
+	}
+	
+	
+	public void valueBound(HttpSessionBindingEvent event)  { 
+       
     }
 
-	/**
-     * @see HttpSessionBindingListener#valueBound(HttpSessionBindingEvent)
-     */
-    public void valueBound(HttpSessionBindingEvent event)  { 
-         // TODO Auto-generated method stub
-    }
 
-	/**
-     * @see HttpSessionBindingListener#valueUnbound(HttpSessionBindingEvent)
-     */
     public void valueUnbound(HttpSessionBindingEvent event)  { 
-         // TODO Auto-generated method stub
+        update();
     }
 	
+    public void update() {
+    	if (userLoggedin) {
+        	try {
+				userDao.updateUser(this.currentUser);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+        }
+    }
 }

@@ -1,0 +1,14 @@
+
+a#logo-text img {
+  width: 30px;
+  height: 30px;
+}
+
+a#logo-text{
+  font-family: 'Ubuntu', sans-serif;
+}
+
+#hero-section {
+  background-size: cover;
+  background-position: center center;
+}
