@@ -11,6 +11,7 @@ public interface PhotoDao {
 	List<Photo> getAllPhotosOfAlbumInLimit(Long userId, Long albumId, int offset, int limit) throws SQLException;
 	int getTotalNoOfPhotosInAlbum(Long userId, Long albumId) throws SQLException;
 	Photo getPhoto(Long photoId, Album album) throws SQLException;
+	Photo getPhoto(Long photoId, Long albumId, Long userId) throws SQLException;
 	void updatePhoto(Photo photo, Album album) throws SQLException;
 	void insertPhoto(Photo photo, Album album) throws SQLException;
 	void deletePhoto(Long photoId, Album album) throws SQLException;

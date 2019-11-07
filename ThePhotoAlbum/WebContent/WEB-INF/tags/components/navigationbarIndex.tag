@@ -1,3 +1,5 @@
+<%@ tag body-content="empty" %>
+
 <nav
 	class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
 	<a href="${pageContext.request.contextPath}" class="navbar-brand" id="logo-text">

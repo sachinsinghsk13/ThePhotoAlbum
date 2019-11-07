@@ -25,7 +25,9 @@ public class UserSession implements HttpSessionBindingListener {
 		super();
 	}
 
-
+    public boolean isUserLoggedin() {
+		return userLoggedin;
+	}
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}

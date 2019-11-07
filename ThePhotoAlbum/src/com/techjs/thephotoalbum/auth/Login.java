@@ -40,12 +40,12 @@ public class Login extends HttpServlet {
 				User user = userDao.getUserByEmail(email);
 				userSession.setUserDao(userDao);
 				userSession.login(user);
-				
+				session.setAttribute(Constants.USER_SESSION, userSession);
 				if (savePassword) {
 					setCredentialsCookies(response, login);
 				}
 				
-				response.sendRedirect(request.getContextPath() + "/App/home.jsp");
+				response.sendRedirect(request.getContextPath() + "/App/Home.jsp");
 			}
 			else {
 				AlertMessage message = new AlertMessage();

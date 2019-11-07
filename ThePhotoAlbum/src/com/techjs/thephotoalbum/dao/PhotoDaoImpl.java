@@ -184,4 +184,31 @@ public class PhotoDaoImpl implements PhotoDao {
 		connection.close();
 	}
 
+	@Override
+	public Photo getPhoto(Long photoId, Long albumId, Long userId) throws SQLException {
+		Connection connection = dataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_PHOTO));
+		statement.setLong(1, userId);
+		statement.setLong(2, albumId);
+		statement.setLong(3, photoId);
+		ResultSet rs = statement.executeQuery();
+		Photo photo = new Photo();
+		if (rs.next()) {
+			photo.setId(rs.getLong(1));
+			photo.setTitle(rs.getString(2));
+			photo.setDescription(rs.getString(3));
+			photo.setUploadDate(rs.getDate(4));
+			photo.setBinaryData(rs.getBytes(5));
+			photo.setThumbBinaryData(rs.getBytes(6));
+			photo.setWidth(rs.getInt(7));
+			photo.setHeight(rs.getInt(8));
+			photo.setOrientation(Orientation.valueOf(rs.getString(9)));
+			photo.setQuality(ImageQuality.valueOf(rs.getString(10)));
+			photo.setUserId(userId);
+			photo.setAlbumId(albumId);
+		}
+		connection.close();
+		return photo;
+	}
+
 }
