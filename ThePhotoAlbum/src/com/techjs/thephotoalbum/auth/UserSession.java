@@ -60,12 +60,12 @@ public class UserSession implements HttpSessionBindingListener {
     }
 	
     public void update() {
-    	if (userLoggedin) {
-        	try {
-				userDao.updateUser(this.currentUser);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-        }
+//    	if (userLoggedin) {
+//        	try {
+//				userDao.updateUser(this.currentUser);
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//        }
     }
 }

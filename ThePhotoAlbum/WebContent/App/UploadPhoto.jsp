@@ -28,9 +28,30 @@
 						<div class="row p-2  shadow-sm bg-light border">
 							<h5>Upload New Photos</h5>
 						</div>
+						<div class="row p-3">
+							<div class="col-12">
+								<h5>Create Album</h5>
+							</div>
+							<div class="col-12" id="album_alerts"></div>
+							<div class="col-lg-4 col-md-12 my-2">
+								<textarea id="album_title" cols="30" rows="2"
+									class="form-control" placeholder="Album Title"
+									style="resize: none;"></textarea>
+							</div>
+							<div class="col-lg-4 col-md-12 my-2">
+								<textarea name="" id="album_description" cols="30" rows="2"
+									class="form-control" placeholder="Album Description"
+									style="resize: none;"></textarea>
+							</div>
+							<div class="col-lg-4 col-md-12 my-2">
+								<button class="btn btn-primary btn-block" id="album_create_btn">
+									Create Album</button>
+							</div>
+						</div>
+						<hr />
 						<div class="row p-2">
 							<div class="col">
-								<h4>Select Album & Photos</h4>
+								<h5>Select Album And Photos</h5>
 							</div>
 						</div>
 						<div class="form-row p-3">
@@ -41,11 +62,8 @@
 											<i class="fas fa-folder"></i>
 										</div>
 									</div>
-									<select class="custom-select">
-										<option selected>Mobile Uploads</option>
-										<option value="1">Ruchika Singh</option>
-										<option value="2">Ashwani Chauhan</option>
-										<option value="3">Other</option>
+									<select class="custom-select" id="target_album">
+										<option value="none">None</option>
 									</select>
 								</div>
 							</div>
@@ -68,7 +86,7 @@
 						<hr />
 						<div class="row p-2">
 							<div class="col">
-								<h4>Images Preview</h4>
+								<h5>Images Preview</h5>
 							</div>
 						</div>
 						<div class="row p-2">
@@ -80,7 +98,7 @@
 						<hr />
 						<div class="row p-2">
 							<div class="col">
-								<h4>Upload</h4>
+								<h5>Upload</h5>
 							</div>
 						</div>
 						<div class="row p-2 d-none" id="progressbar-div">

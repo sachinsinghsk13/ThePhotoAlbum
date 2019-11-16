@@ -9,10 +9,11 @@ public class Album {
 	private String description;
 	private Date createTime;
 	private Date lastPhotoUploadTime;
-	private byte[] albumCover;
+	transient private byte[] albumCover;
 	
 	public Album() {
 		super();
+		this.albumCover = "NO ALBUM COVER".getBytes();
 	}
 	
 	

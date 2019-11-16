@@ -31,7 +31,7 @@ class Photo {
      * Starts Initializing This Photo Object. onready function is fired when initialization completes
      */
     initialize() {
-        this.title = this.file.name;
+        this.title = this.file.name.substr(0, 30);
         this.filename = this.file.name;
         this.size = this.file.size / 1024;
         this.description = "";
@@ -72,6 +72,18 @@ class Photo {
         return this.orientation;
     }
 }
+class PhotoModel {
+    constructor(filename, title, description, size, width, height, orientation, quality) {
+        this.filename = filename;
+        this.title = title;
+        this.description = description;
+        this.size = size;
+        this.width = width;
+        this.height = height;
+        this.quality = quality;
+        this.orientation = orientation;
+    }
+}
 class PhotoPreviewManager {
     constructor(fileInputId, previewContainerid, maxFileUpload) {
         this.totalPhotos = 0;
@@ -80,7 +92,8 @@ class PhotoPreviewManager {
         this.photos = new Array();
         this.maxFileUpload = maxFileUpload;
         this.uploadButton = $(`#upload-button`);
-        this.uploadButton.on('click', this.startUpload.bind(this));
+        this.targetAlbumField = $("#target_album");
+        this.uploadButton.on("click", this.startUpload.bind(this));
         this.fileInput.on("change", event => {
             this.showAnimation();
             let files = event.target.files;
@@ -106,45 +119,53 @@ class PhotoPreviewManager {
     }
     startUpload() {
         if (this.totalPhotos < 1) {
-            alert('Please Select Atleast One Photo To Start Upload.');
+            alert("Please Select Atleast One Photo To Start Upload.");
             return;
         }
         // disable image preview section
         this.previewContainer.css({
             "pointer-events": "none",
-            "opacity": "0.4"
+            opacity: "0.4"
         });
         // Prepare the payload
         let formData = new FormData();
-        this.photos.forEach((photo) => {
+        // Insert Binary Large Objects
+        this.photos.forEach(photo => {
             formData.append(photo.filename, photo.file);
         });
-        formData.append('details', JSON.stringify(this.photos));
-        formData.forEach((value, key) => {
-            console.log(key, ' : ', value);
+        // Insert target AlbumId
+        let albumId = this.targetAlbumField.val();
+        formData.append("albumId", albumId);
+        // Create PhotoModel from Photos
+        let photoModelPayload = [];
+        this.photos.forEach((photo) => {
+            let pm = new PhotoModel(photo.filename, photo.title, photo.description, photo.size, photo.width, photo.height, photo.orientation, photo.quality);
+            photoModelPayload.push(pm);
         });
+        // Insert Payload Details
+        formData.append("payload_info", JSON.stringify(photoModelPayload));
         // make the ajax call
         $.ajax({
             beforeSend: () => {
-                $('#progressbar-div').removeClass("d-none");
+                $("#progressbar-div").removeClass("d-none");
             },
             xhr: () => {
                 let xhr = new XMLHttpRequest();
-                xhr.onprogress = (evt) => {
+                xhr.onprogress = evt => {
                     if (evt.lengthComputable) {
                         let percent = ((evt.loaded / evt.total) * 100).toFixed(0);
-                        $('#progressbar-div .progressbar').css('width', percent);
+                        $("#progressbar-div .progressbar").css("width", percent);
                     }
                 };
                 return xhr;
             },
-            method: 'POST',
+            method: "POST",
             data: formData,
             contentType: false,
             processData: false,
-            url: '/ThePhotoAlbum/App/PhotoUpload',
+            url: "/ThePhotoAlbum/App/PhotoUpload"
         }).then(() => {
-            $('#progressbar-div').addClass('d-none');
+            $("#progressbar-div").addClass("d-none");
             window.location.reload();
         });
     }
@@ -236,6 +257,46 @@ class PhotoPreviewManager {
         this.previewContainer.append(animation);
     }
 }
+class AlbumManager {
+    constructor() {
+        this.albumTitleField = $(`#album_title`);
+        this.albumDescriptionField = $(`#album_description`);
+        this.albumCreateButton = $(`#album_create_btn`);
+        this.targetAlbumSelectField = $(`#target_album`);
+        // load the user albums
+        this.loadUserAlbums();
+        this.albumCreateButton.on("click", evt => {
+            let title = this.albumTitleField.val();
+            let description = this.albumDescriptionField.val();
+            if (!title) {
+                alert("Album Title Can't be Empty");
+                return;
+            }
+            if (!description)
+                description = "";
+            $.post("/ThePhotoAlbum/App/CreateAlbum", {
+                title: title,
+                description: description
+            }).done(() => {
+                this.loadUserAlbums();
+                $("#album_alerts").append($("<div>")
+                    .addClass("alert")
+                    .addClass("alert-info")
+                    .text("<p>Successfully Created Album " + title + " </p>"));
+            });
+        });
+    }
+    loadUserAlbums() {
+        $.get("/ThePhotoAlbum/App/AlbumList", data => {
+            let list = JSON.parse(data);
+            this.targetAlbumSelectField.empty();
+            list.forEach((item) => {
+                this.targetAlbumSelectField.append($("<option>", { value: item.id, text: item.title }));
+            });
+        });
+    }
+}
 $(() => {
     let preview = new PhotoPreviewManager("photo_upload_input", "image-preview-container", 5);
+    let albumManager = new AlbumManager();
 });

@@ -13,6 +13,6 @@ public interface PhotoDao {
 	Photo getPhoto(Long photoId, Album album) throws SQLException;
 	Photo getPhoto(Long photoId, Long albumId, Long userId) throws SQLException;
 	void updatePhoto(Photo photo, Album album) throws SQLException;
-	void insertPhoto(Photo photo, Album album) throws SQLException;
+	void insertPhoto(Photo photo) throws SQLException;
 	void deletePhoto(Long photoId, Album album) throws SQLException;
 }

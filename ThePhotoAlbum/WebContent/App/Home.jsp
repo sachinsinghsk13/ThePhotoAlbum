@@ -78,7 +78,7 @@
 											<img src="img/photos.png" alt="" height="70px" width="70px">
 										</div>
 										<div class=" offset-1 col-7">
-											<h5>Family Photos</h5>
+											<h5>Goa Tour</h5>
 											<p class="text-muted">120 Photos</p>
 											<a href="" class="btn btn-sm btn-primary">View Photos</a>
 										</div>
@@ -92,7 +92,7 @@
 											<img src="img/photos.png" alt="" height="70px" width="70px">
 										</div>
 										<div class=" offset-1 col-7">
-											<h5>Family Photos</h5>
+											<h5>Delhi Visit</h5>
 											<p class="text-muted">120 Photos</p>
 											<a href="" class="btn btn-sm btn-primary">View Photos</a>
 										</div>
@@ -106,7 +106,7 @@
 											<img src="img/photos.png" alt="" height="70px" width="70px">
 										</div>
 										<div class=" offset-1 col-7">
-											<h5>Family Photos</h5>
+											<h5>My Selfies</h5>
 											<p class="text-muted">120 Photos</p>
 											<a href="" class="btn btn-sm btn-primary">View Photos</a>
 										</div>
@@ -115,7 +115,7 @@
 							</div>
 						</div>
 						<div class="p-3 text-center">
-							<p class="h6 text-muted">You Don't have uploaded any photo
+							<p class="h6 text-muted d-none">You Don't have uploaded any photo
 								yet.</p>
 						</div>
 					</div>
@@ -126,7 +126,10 @@
 									class="badge badge-secondary">103</span>
 							</h5>
 						</div>
-						<div class="row p-2">fdsofsd</div>
+						<div class="row p-2"></div>
+						<div class="p-3 text-center">
+							<p class="h6 text-muted ">No Favourities Marked Yet.</p>
+						</div>
 					</div>
 				</main>
 			</div>

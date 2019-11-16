@@ -13,8 +13,8 @@ public class Photo {
 	private String description;
 	private Double fileSize;
 	private Date uploadDate;
-	private byte[] binaryData;
-	private byte[] thumbBinaryData;
+	transient private byte[] binaryData;
+	transient private byte[] thumbBinaryData;
 	private Integer height;
 	private Integer width;
 	private Orientation orientation;

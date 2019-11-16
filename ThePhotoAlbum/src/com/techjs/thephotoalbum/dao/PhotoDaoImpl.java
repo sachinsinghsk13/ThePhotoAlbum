@@ -149,11 +149,11 @@ public class PhotoDaoImpl implements PhotoDao {
 	}
 
 	@Override
-	public void insertPhoto(Photo photo, Album album) throws SQLException {
+	public void insertPhoto(Photo photo) throws SQLException {
 		Connection connection = dataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.INSERT_PHOTO), Statement.RETURN_GENERATED_KEYS);
-		statement.setLong(1, album.getUserId());
-		statement.setLong(2, album.getId());
+		statement.setLong(1, photo.getUserId());
+		statement.setLong(2, photo.getAlbumId());
 		statement.setString(3, photo.getTitle());
 		statement.setString(4, photo.getDescription());
 		statement.setDouble(5, photo.getFileSize());
@@ -198,12 +198,13 @@ public class PhotoDaoImpl implements PhotoDao {
 			photo.setTitle(rs.getString(2));
 			photo.setDescription(rs.getString(3));
 			photo.setUploadDate(rs.getDate(4));
-			photo.setBinaryData(rs.getBytes(5));
-			photo.setThumbBinaryData(rs.getBytes(6));
-			photo.setWidth(rs.getInt(7));
-			photo.setHeight(rs.getInt(8));
-			photo.setOrientation(Orientation.valueOf(rs.getString(9)));
-			photo.setQuality(ImageQuality.valueOf(rs.getString(10)));
+			photo.setFileSize(rs.getDouble(5));
+			photo.setBinaryData(rs.getBytes(6));
+			photo.setThumbBinaryData(rs.getBytes(7));
+			photo.setWidth(rs.getInt(8));
+			photo.setHeight(rs.getInt(9));
+			photo.setOrientation(Orientation.valueOf(rs.getString(10)));
+			photo.setQuality(ImageQuality.valueOf(rs.getString(11)));
 			photo.setUserId(userId);
 			photo.setAlbumId(albumId);
 		}
