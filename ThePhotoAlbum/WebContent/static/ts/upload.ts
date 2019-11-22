@@ -34,7 +34,7 @@ class Photo {
    * Starts Initializing This Photo Object. onready function is fired when initialization completes
    */
   private initialize(): void {
-    this.title = this.file.name.substr(0,30);
+    this.title = this.file.name.substr(0, 30);
     this.filename = this.file.name;
     this.size = this.file.size / 1024;
     this.description = "";
@@ -163,26 +163,35 @@ class PhotoPreviewManager {
     });
 
     // Prepare the payload
-	let formData = new FormData();
-	
-	// Insert Binary Large Objects
+    let formData = new FormData();
+
+    // Insert Binary Large Objects
     this.photos.forEach(photo => {
       formData.append(photo.filename, photo.file);
     });
 
-	// Insert target AlbumId
+    // Insert target AlbumId
     let albumId = <string>this.targetAlbumField.val();
     formData.append("albumId", albumId);
-	
-	// Create PhotoModel from Photos
-	let photoModelPayload: PhotoModel[] = [];
-	this.photos.forEach((photo) => {
-		let pm = new PhotoModel(photo.filename, photo.title, photo.description, photo.size, photo.width, photo.height, photo.orientation, photo.quality);
-		photoModelPayload.push(pm);
-	}) 
 
-	// Insert Payload Details
-	formData.append("payload_info",JSON.stringify(photoModelPayload));
+    // Create PhotoModel from Photos
+    let photoModelPayload: PhotoModel[] = [];
+    this.photos.forEach(photo => {
+      let pm = new PhotoModel(
+        photo.filename,
+        photo.title,
+        photo.description,
+        photo.size,
+        photo.width,
+        photo.height,
+        photo.orientation,
+        photo.quality
+      );
+      photoModelPayload.push(pm);
+    });
+
+    // Insert Payload Details
+    formData.append("payload_info", JSON.stringify(photoModelPayload));
 
     // make the ajax call
 
@@ -192,12 +201,15 @@ class PhotoPreviewManager {
       },
       xhr: () => {
         let xhr = new XMLHttpRequest();
-        xhr.onprogress = evt => {
-          if (evt.lengthComputable) {
-            let percent = ((evt.loaded / evt.total) * 100).toFixed(0);
-            $("#progressbar-div .progressbar").css("width", percent);
-          }
-        };
+        if (xhr.upload) {
+          xhr.upload.addEventListener("progress", evt => {
+            if (evt.lengthComputable) {
+              let percent = ((evt.loaded / evt.total) * 100).toFixed(0);
+              console.log(percent);
+              $("#progressbar-div .progressbar").css("width", percent);
+            }
+          });
+        }
         return xhr;
       },
       method: "POST",

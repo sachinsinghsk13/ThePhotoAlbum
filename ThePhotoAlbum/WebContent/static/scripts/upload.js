@@ -138,7 +138,7 @@ class PhotoPreviewManager {
         formData.append("albumId", albumId);
         // Create PhotoModel from Photos
         let photoModelPayload = [];
-        this.photos.forEach((photo) => {
+        this.photos.forEach(photo => {
             let pm = new PhotoModel(photo.filename, photo.title, photo.description, photo.size, photo.width, photo.height, photo.orientation, photo.quality);
             photoModelPayload.push(pm);
         });
@@ -151,12 +151,15 @@ class PhotoPreviewManager {
             },
             xhr: () => {
                 let xhr = new XMLHttpRequest();
-                xhr.onprogress = evt => {
-                    if (evt.lengthComputable) {
-                        let percent = ((evt.loaded / evt.total) * 100).toFixed(0);
-                        $("#progressbar-div .progressbar").css("width", percent);
-                    }
-                };
+                if (xhr.upload) {
+                    xhr.upload.addEventListener("progress", evt => {
+                        if (evt.lengthComputable) {
+                            let percent = ((evt.loaded / evt.total) * 100).toFixed(0);
+                            console.log(percent);
+                            $("#progressbar-div .progress-bar").css("width", percent + "%");
+                        }
+                    });
+                }
                 return xhr;
             },
             method: "POST",
@@ -166,7 +169,7 @@ class PhotoPreviewManager {
             url: "/ThePhotoAlbum/App/PhotoUpload"
         }).then(() => {
             $("#progressbar-div").addClass("d-none");
-            window.location.reload();
+            //window.location.reload();
         });
     }
     showPreview() {
