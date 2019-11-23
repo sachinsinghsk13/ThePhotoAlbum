@@ -2,6 +2,7 @@ package com.techjs.thephotoalbum.models;
 
 import java.util.Date;
 
+import com.techjs.thephotoalbum.utils.Favourite;
 import com.techjs.thephotoalbum.utils.ImageQuality;
 import com.techjs.thephotoalbum.utils.Orientation;
 
@@ -13,12 +14,13 @@ public class Photo {
 	private String description;
 	private Double fileSize;
 	private Date uploadDate;
-	transient private byte[] binaryData;
-	transient private byte[] thumbBinaryData;
+	private byte[] binaryData;
+	private byte[] thumbBinaryData;
 	private Integer height;
 	private Integer width;
 	private Orientation orientation;
 	private ImageQuality quality;
+	private Favourite favourite;
 	
 	public Long getId() {
 		return id;
@@ -99,6 +101,14 @@ public class Photo {
 	}
 	public void setFileSize(Double fileSize) {
 		this.fileSize = fileSize;
+	}
+	
+	
+	public Favourite getFavourite() {
+		return favourite;
+	}
+	public void setFavourite(Favourite favourite) {
+		this.favourite = favourite;
 	}
 	@Override
 	public String toString() {

@@ -14,6 +14,7 @@ import com.sun.mail.util.QDecoderStream;
 import com.techjs.thephotoalbum.beans.DataSourceAndQueries;
 import com.techjs.thephotoalbum.models.Album;
 import com.techjs.thephotoalbum.models.Photo;
+import com.techjs.thephotoalbum.utils.Favourite;
 import com.techjs.thephotoalbum.utils.ImageQuality;
 import com.techjs.thephotoalbum.utils.Orientation;
 import com.techjs.thephotoalbum.utils.SQLQueries;
@@ -53,6 +54,7 @@ public class PhotoDaoImpl implements PhotoDao {
 			photo.setHeight(rs.getInt(8));
 			photo.setOrientation(Orientation.valueOf(rs.getString(9)));
 			photo.setQuality(ImageQuality.valueOf(rs.getString(10)));
+			photo.setFavourite(Favourite.valueOf(rs.getString(11)));
 			photo.setUserId(userId);
 			photo.setAlbumId(albumId);
 			photos.add(photo);
@@ -84,6 +86,7 @@ public class PhotoDaoImpl implements PhotoDao {
 			photo.setHeight(rs.getInt(8));
 			photo.setOrientation(Orientation.valueOf(rs.getString(9)));
 			photo.setQuality(ImageQuality.valueOf(rs.getString(10)));
+			photo.setFavourite(Favourite.valueOf(rs.getString(11)));
 			photo.setUserId(userId);
 			photo.setAlbumId(albumId);
 			photos.add(photo);
@@ -110,29 +113,7 @@ public class PhotoDaoImpl implements PhotoDao {
 
 	@Override
 	public Photo getPhoto(Long photoId, Album album) throws SQLException {
-		Connection connection = dataSource.getConnection();
-		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_PHOTO));
-		statement.setLong(1, album.getUserId());
-		statement.setLong(2, album.getId());
-		statement.setLong(3, photoId);
-		ResultSet rs = statement.executeQuery();
-		Photo photo = new Photo();
-		if (rs.next()) {
-			photo.setId(rs.getLong(1));
-			photo.setTitle(rs.getString(2));
-			photo.setDescription(rs.getString(3));
-			photo.setUploadDate(rs.getDate(4));
-			photo.setBinaryData(rs.getBytes(5));
-			photo.setThumbBinaryData(rs.getBytes(6));
-			photo.setWidth(rs.getInt(7));
-			photo.setHeight(rs.getInt(8));
-			photo.setOrientation(Orientation.valueOf(rs.getString(9)));
-			photo.setQuality(ImageQuality.valueOf(rs.getString(10)));
-			photo.setUserId(album.getUserId());
-			photo.setAlbumId(album.getId());
-		}
-		connection.close();
-		return photo;
+		return getPhoto(photoId, album.getId(), album.getUserId());
 	}
 
 	@Override
@@ -205,6 +186,7 @@ public class PhotoDaoImpl implements PhotoDao {
 			photo.setHeight(rs.getInt(9));
 			photo.setOrientation(Orientation.valueOf(rs.getString(10)));
 			photo.setQuality(ImageQuality.valueOf(rs.getString(11)));
+			photo.setFavourite(Favourite.valueOf(rs.getString(12)));
 			photo.setUserId(userId);
 			photo.setAlbumId(albumId);
 		}

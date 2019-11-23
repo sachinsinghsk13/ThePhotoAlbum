@@ -1,5 +1,7 @@
 package com.techjs.thephotoalbum.web.ajax;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,6 +30,9 @@ import com.techjs.thephotoalbum.models.Photo;
 import com.techjs.thephotoalbum.utils.Constants;
 import com.techjs.thephotoalbum.utils.ImageQuality;
 import com.techjs.thephotoalbum.utils.Orientation;
+
+import net.coobird.thumbnailator.Thumbnailator;
+import net.coobird.thumbnailator.Thumbnails;
 
 @WebServlet("/App/PhotoUpload")
 @MultipartConfig(location = "/home/sachinsingh/Workspace", fileSizeThreshold = 2 * 1024 * 1024)
@@ -66,7 +71,12 @@ public class PhotoUpload extends HttpServlet {
 				photo.setOrientation(Orientation.valueOf(model.getOrientation()));
 				photo.setBinaryData(part.getInputStream().readAllBytes());
 				photo.setThumbBinaryData(photo.getBinaryData());
+				ByteArrayInputStream bais = new ByteArrayInputStream(photo.getBinaryData());
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				Thumbnails.of(bais).size(200, 200).outputFormat("jpg").toOutputStream(baos);
+				photo.setThumbBinaryData(baos.toByteArray());
 				photoDao.insertPhoto(photo);
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

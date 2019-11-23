@@ -205,8 +205,7 @@ class PhotoPreviewManager {
           xhr.upload.addEventListener("progress", evt => {
             if (evt.lengthComputable) {
               let percent = ((evt.loaded / evt.total) * 100).toFixed(0);
-              console.log(percent);
-              $("#progressbar-div .progressbar").css("width", percent);
+              $("#progressbar-div .progress-bar").css("width", percent+"%");
             }
           });
         }
@@ -219,7 +218,8 @@ class PhotoPreviewManager {
       url: "/ThePhotoAlbum/App/PhotoUpload"
     }).then(() => {
       $("#progressbar-div").addClass("d-none");
-      window.location.reload();
+      this.previewContainer.css({"opacity":1,"pointer-events":"auto"});
+      this.previewContainer.empty().append($("<p>").addClass("text-muted").addClass("text-center").addClass("h6").text("Select Images to See Preview"));
     });
   }
   private showPreview() {
@@ -357,8 +357,12 @@ class AlbumManager {
           $("<div>")
             .addClass("alert")
             .addClass("alert-info")
-            .text("<p>Successfully Created Album " + title + " </p>")
+            .addClass("alert-dismissible")
+            .html("Album Created  <strong> " + title + "</strong>")
+            .fadeOut(4000)
         );
+        this.albumTitleField.val("");
+        this.albumDescriptionField.val("");
       });
     });
   }

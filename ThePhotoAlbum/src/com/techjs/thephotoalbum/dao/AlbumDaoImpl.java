@@ -1,6 +1,7 @@
 package com.techjs.thephotoalbum.dao;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,10 +32,10 @@ public class AlbumDaoImpl implements AlbumDao {
 	}
 	
 	@Override
-	public List<Album> getAllAlbumOfUser(Long id) throws SQLException {
+	public List<Album> getAllAlbumOfUser(Long userId) throws SQLException {
 		Connection connection = dataSource.getConnection();
 		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_ALL_ALBUM_OF_USER));
-		statement.setLong(1, id);
+		statement.setLong(1, userId);
 		ResultSet rs = statement.executeQuery();
 		List<Album> albums = new ArrayList<Album>();
 		while (rs.next()) {
@@ -45,7 +46,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			album.setCreateTime(rs.getDate(4));
 			album.setLastPhotoUploadTime(rs.getDate(5));
 			album.setAlbumCover(rs.getBytes(6));
-			album.setUserId(id);
+			album.setUserId(userId);
 			albums.add(album);
 		}
 		connection.close();
@@ -53,10 +54,10 @@ public class AlbumDaoImpl implements AlbumDao {
 	}
 
 	@Override
-	public List<Album> getAllAlbumOfUserInLimit(Long id, int offset, int limit) throws SQLException {
+	public List<Album> getAllAlbumOfUserInLimit(Long userId, int offset, int limit) throws SQLException {
 		Connection connection = dataSource.getConnection();
-		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_ALL_ALBUM_OF_USER));
-		statement.setLong(1, id);
+		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_ALL_ALBUM_OF_USER_LIMIT));
+		statement.setLong(1, userId);
 		statement.setInt(2, offset);
 		statement.setInt(3, limit);
 		ResultSet rs = statement.executeQuery();
@@ -69,7 +70,7 @@ public class AlbumDaoImpl implements AlbumDao {
 			album.setCreateTime(rs.getDate(4));
 			album.setLastPhotoUploadTime(rs.getDate(5));
 			album.setAlbumCover(rs.getBytes(6));
-			album.setUserId(id);
+			album.setUserId(userId);
 			albums.add(album);
 		}
 		connection.close();
@@ -149,6 +150,21 @@ public class AlbumDaoImpl implements AlbumDao {
 		statement.setLong(2, albumId);
 		statement.executeUpdate();
 		connection.close();
+	}
+
+	@Override
+	public byte[] getAlbumThumb(Long userId, Long albumId) throws SQLException, IOException {
+		Connection connection = dataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_ALBUM_THUMB));
+		statement.setLong(1, userId);
+		statement.setLong(2, albumId);
+		ResultSet rs = statement.executeQuery();
+		if (rs.next()) {
+			byte[] data = rs.getBinaryStream(1).readAllBytes();
+			connection.close();
+			return data;
+		}
+		return this.getClass().getResourceAsStream("/WEB-INF/logo.png").readAllBytes();
 	}
 	
 }

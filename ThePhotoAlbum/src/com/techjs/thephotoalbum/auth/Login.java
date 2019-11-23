@@ -45,7 +45,7 @@ public class Login extends HttpServlet {
 					setCredentialsCookies(response, login);
 				}
 				
-				response.sendRedirect(request.getContextPath() + "/App/Home.jsp");
+				response.sendRedirect(request.getContextPath() + "/App/Home");
 			}
 			else {
 				AlertMessage message = new AlertMessage();

@@ -1,7 +1,7 @@
 <%@ tag body-content="empty" %>
 <nav
 	class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
-	<a href="${pageContext.request.contextPath}/App/Home.jsp" class="navbar-brand" id="logo-text"> <img
+	<a href="${pageContext.request.contextPath}/App/Home" class="navbar-brand" id="logo-text"> <img
 		src="${pageContext.request.contextPath}/static/images/logo.png" alt="" /> MyPhotoAlbum
 	</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse"

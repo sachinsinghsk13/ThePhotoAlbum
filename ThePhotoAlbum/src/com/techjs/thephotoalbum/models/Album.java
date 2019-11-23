@@ -9,6 +9,7 @@ public class Album {
 	private String description;
 	private Date createTime;
 	private Date lastPhotoUploadTime;
+	private Integer totalPhotos;
 	transient private byte[] albumCover;
 	
 	public Album() {
@@ -74,6 +75,16 @@ public class Album {
 		return "Album [id=" + id + ", userId=" + userId + ", title=" + title + ", description=" + description
 				+ ", createTime=" + createTime + ", lastPhotoUploadTime=" + lastPhotoUploadTime + "]";
 	}
+
+	public Integer getTotalPhotos() {
+		return totalPhotos;
+	}
+
+
+	public void setTotalPhotos(Integer totalPhotos) {
+		this.totalPhotos = totalPhotos;
+	}
+
 
 	@Override
 	public boolean equals(Object obj) {

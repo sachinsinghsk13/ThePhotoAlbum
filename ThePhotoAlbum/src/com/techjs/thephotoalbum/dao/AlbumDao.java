@@ -1,5 +1,6 @@
 package com.techjs.thephotoalbum.dao;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface AlbumDao {
 	void updateAlbum(Album album) throws SQLException;
 	void insertAlbum(Album album) throws SQLException;
 	void deleteAlbum(Long userId, Long albumId) throws SQLException;
+	byte[] getAlbumThumb(Long userId, Long albumId) throws SQLException, IOException;
 }
