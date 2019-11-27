@@ -31,6 +31,10 @@
 						</h5>
 					</div>
 					<div class="row p-3 justify-content-center">
+					<c:forEach var="photo"  varStatus="itr"   items="${recentUploads }">
+							<img src="${ pageContext.request.contextPath}/App/DownloadPhoto?albumId=${photo.albumId}&photoId=${photo.id}" class="img-fluid"/>
+							<h4>${itr.index }</h4>
+					</c:forEach>
 						<!-- <div class="img-grid-row">
                                 <div class="img-grid-col">
                                     <img src="img1.jpg" class="rounded shadow-sm" />
@@ -70,27 +74,43 @@
 						</h5>
 					</div>
 					<div class="row p-2">
-						<c:forEach var="album" items="${albums }">
-							<div class="col-lg-4 col-md-6 col-sm-12 my-2">
-								<div class="container album shadow-sm p-2">
-									<div class="row">
-										<div class="col-3 mx-1">
-											<img src="${pageContext.request.contextPath }/App/GetAlbumThumb?albumId=${album.id}" alt="" height="90px" width="90px">
-										</div>
-										<div class=" offset-1 col-7">
-											<h5>${album.title }</h5>
-											<p class="text-muted">${album.totalPhotos } Photos</p>
-											<a href="" class="btn btn-sm btn-primary">View Photos</a>
+						<c:choose>
+							<c:when test="${fn:length(albums) gt 0 }">
+								<c:forEach var="album" items="${albums }">
+									<div class="col-lg-4 col-md-6 col-sm-12 my-2"
+										title="${album.description }">
+										<div class="container album shadow-sm p-2">
+											<div class="row">
+												<div class="col-3 mx-1">
+													<img
+														src="${pageContext.request.contextPath }/App/GetAlbumThumb?albumId=${album.id}"
+														alt="" height="90px" width="90px">
+												</div>
+												<div class=" offset-1 col-7">
+													<h6>${album.title }</h6>
+													<p class="text-muted">${album.totalPhotos } Photos</p>
+													<a href="" class="btn btn-sm btn-primary">View Photos</a>
+												</div>
+											</div>
 										</div>
 									</div>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<div class="p-3 text-center w-100">
+									<p class="h6 text-muted">You Don't have uploaded any photo
+										yet.</p>
 								</div>
-							</div>
-						</c:forEach>
+							</c:otherwise>
+						</c:choose>
 					</div>
-					<div class="p-3 text-center">
-						<p class="h6 text-muted d-none">You Don't have uploaded any
-							photo yet.</p>
-					</div>
+					<c:if test="${fn:length(albums) gt 0 }">
+						<div class="p-2 justify-content-right">
+							<a class="btn btn-outline-secondary btn-sm" href="#">See All
+								Albums</a>
+						</div>
+					</c:if>
+
 				</div>
 				<div class="container shadow-sm rounded my-3">
 					<div class="row p-2 shadow-sm bg-light">

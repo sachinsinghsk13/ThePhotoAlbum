@@ -14,6 +14,7 @@ import com.techjs.thephotoalbum.dao.AlbumDao;
 import com.techjs.thephotoalbum.dao.PhotoDao;
 import com.techjs.thephotoalbum.dao.UserDao;
 import com.techjs.thephotoalbum.models.Album;
+import com.techjs.thephotoalbum.models.Photo;
 import com.techjs.thephotoalbum.utils.Constants;
 import com.techjs.thephotoalbum.utils.UserSessionUtil;
 
@@ -34,6 +35,9 @@ public class Homepage extends HttpServlet {
 				album.setTotalPhotos(total);
 			}
 			request.setAttribute("albums", albums);
+			
+			List<Photo> recents = photoDao.getRecentPhotos(userId);
+			request.setAttribute("recentUploads", recents);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

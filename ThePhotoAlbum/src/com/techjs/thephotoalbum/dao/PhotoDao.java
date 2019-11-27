@@ -9,6 +9,7 @@ import com.techjs.thephotoalbum.models.Photo;
 public interface PhotoDao {
 	List<Photo> getAllPhotosOfAlbum(Long userId, Long albumId) throws SQLException;
 	List<Photo> getAllPhotosOfAlbumInLimit(Long userId, Long albumId, int offset, int limit) throws SQLException;
+	List<Photo> getRecentPhotos(Long userId) throws SQLException;
 	int getTotalNoOfPhotosInAlbum(Long userId, Long albumId) throws SQLException;
 	Photo getPhoto(Long photoId, Album album) throws SQLException;
 	Photo getPhoto(Long photoId, Long albumId, Long userId) throws SQLException;

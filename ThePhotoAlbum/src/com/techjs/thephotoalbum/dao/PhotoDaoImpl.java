@@ -194,4 +194,22 @@ public class PhotoDaoImpl implements PhotoDao {
 		return photo;
 	}
 
+	@Override
+	public List<Photo> getRecentPhotos(Long userId) throws SQLException {
+		List<Photo> photos = new ArrayList<Photo>();
+		Connection connection = dataSource.getConnection();
+		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_RECENT_PHOTOS));
+		statement.setLong(1, userId);
+		ResultSet rs = statement.executeQuery();
+		while (rs.next()) {
+			Photo photo = new Photo();
+			photo.setId(rs.getLong(1));
+			photo.setTitle(rs.getString(2));
+			photo.setDescription(rs.getString(3));
+			photo.setAlbumId(rs.getLong(4));
+			photos.add(photo);
+		}
+		connection.close();
+		return photos;
+	}
 }
