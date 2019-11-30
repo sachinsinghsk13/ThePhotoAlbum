@@ -1,41 +1,39 @@
 package com.techjs.thephotoalbum.web;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-/**
- * Servlet implementation class GetPhoto
- */
+import com.techjs.thephotoalbum.auth.UserSession;
+import com.techjs.thephotoalbum.dao.PhotoDao;
+import com.techjs.thephotoalbum.models.Photo;
+import com.techjs.thephotoalbum.utils.Constants;
+
 @WebServlet("/App/GetPhoto")
 public class GetPhoto extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public GetPhoto() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		Long photoId = Long.parseLong(request.getParameter("photoId"));
+		Long albumId = Long.parseLong(request.getParameter("albumId"));
+		
+		HttpSession session = request.getSession();
+		UserSession userSession = (UserSession) session.getAttribute(Constants.USER_SESSION); 
+		Long userId = userSession.getCurrentUser().getId();
+		PhotoDao photoDao = (PhotoDao) getServletContext().getAttribute(Constants.PHOTO_DAO);
+		try {
+			Photo photo = photoDao.getPhoto(photoId, albumId, userId);
+			response.setContentType("image/jpeg");
+			response.getOutputStream().write(photo.getBinaryData());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

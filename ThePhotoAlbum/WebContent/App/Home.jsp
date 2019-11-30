@@ -22,8 +22,9 @@
 					<comp:dashboard username="${USER_SESSION.currentUser.name }" />
 					<comp:findPhotos />
 				</aside>
-				<main class="col-lg-9 col-md-8 order-lg-last order-first"> <!-- Recent Uploads View  -->
-
+				<main class="col-lg-9 col-md-8 order-lg-last order-first"> 
+				
+				<!-- Recent Uploads View  -->
 				<div class="container shadow rounded my-3">
 					<div class="row p-2  shadow-sm bg-light text-dark border">
 						<h5>
@@ -31,36 +32,26 @@
 						</h5>
 					</div>
 					<div class="row p-3 justify-content-center">
-					<c:forEach var="photo"  varStatus="itr"   items="${recentUploads }">
-							<img src="${ pageContext.request.contextPath}/App/DownloadPhoto?albumId=${photo.albumId}&photoId=${photo.id}" class="img-fluid"/>
-							<h4>${itr.index }</h4>
-					</c:forEach>
-						<!-- <div class="img-grid-row">
-                                <div class="img-grid-col">
-                                    <img src="img1.jpg" class="rounded shadow-sm" />
-                                    <img src="img/img11.png" class="rounded shadow-sm" />
-                                    <img src="img/img13.png" class="rounded shadow-sm" />
-                                </div>
-                                <div class="img-grid-col">
-                                    <img src="img4.jpg" class="rounded shadow-sm" />
-                                    <img src="img/img12.png" class="rounded shadow-sm" />
-                                    <img src="img2.jpg" class="rounded shadow-sm" />
-                                    <img src="img/img1.png" class="rounded shadow-sm" />
-                                </div>
-                            </div> -->
-						<p class="h6 text-muted">You Don't have uploaded any photo
-							yet.</p>
-						<!-- <div class="text-center">
-                                <div class="spinner-grow text-primary" role="status">
-                                    <span class="sr-only">Loading...</span>
-                                </div>
-                                <div class="spinner-grow text-danger" role="status">
-                                    <span class="sr-only">Loading...</span>
-                                </div>
-                                <div class="spinner-grow text-success" role="status">
-                                    <span class="sr-only">Loading...</span>
-                                </div>
-                            </div> -->
+							<c:choose>
+								<c:when test="${fn:length(recentUploads) gt 0 }">
+									<div class="image-grid-row">
+										<c:forEach var="photo" items="${recentUploads }" varStatus="status">
+											<c:if test="${status.index%2 eq 0 }">
+												<div class="image-grid-column">
+											</c:if>
+											
+											<img src="${pageContext.request.contextPath }/App/GetPhoto?albumId=${photo.albumId}&photoId=${photo.id}"/>
+											
+											<c:if test="${((status.index +1) % 2 eq 0) or (status.count eq fn:length(recentUploads)) }">
+												</div>
+											</c:if>
+										</c:forEach>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<p class="h6 text-muted">You Don't Have Uploaded Any Photo Yet.</p>
+								</c:otherwise>
+							</c:choose>
 					</div>
 				</div>
 
