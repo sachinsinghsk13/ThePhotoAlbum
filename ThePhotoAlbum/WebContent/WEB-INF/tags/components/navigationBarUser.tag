@@ -15,7 +15,7 @@
 					class="fas fa-home"></i> Home</a></li>
 			<li class="nav-item"><a href="#" class="nav-link"><i
 					class="fas fa-image"></i> Gallery</a></li>
-			<li class="nav-item"><a href="#" class="nav-link"
+			<li class="nav-item"><a href="${pageContext.request.contextPath}/App/Albums" class="nav-link"
 				title="View All Your Albums"><i class="fas fa-images"></i>
 					Albums</a></li>
 			<li class="nav-item"><a href="#" class="nav-link"><i

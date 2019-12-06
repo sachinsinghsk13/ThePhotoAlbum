@@ -154,17 +154,17 @@ public class AlbumDaoImpl implements AlbumDao {
 
 	@Override
 	public byte[] getAlbumThumb(Long userId, Long albumId) throws SQLException, IOException {
-		Connection connection = dataSource.getConnection();
-		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_ALBUM_THUMB));
-		statement.setLong(1, userId);
-		statement.setLong(2, albumId);
-		ResultSet rs = statement.executeQuery();
-		if (rs.next()) {
-			byte[] data = rs.getBinaryStream(1).readAllBytes();
-			connection.close();
-			return data;
+		try (Connection connection = dataSource.getConnection()) {
+			PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_ALBUM_THUMB));
+			statement.setLong(1, userId);
+			statement.setLong(2, albumId);
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				byte[] data = rs.getBinaryStream(1).readAllBytes();
+				return data;
+			}
+			return null;
 		}
-		return this.getClass().getResourceAsStream("/WEB-INF/logo.png").readAllBytes();
 	}
 	
 }

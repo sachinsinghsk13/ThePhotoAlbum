@@ -18,6 +18,18 @@
 	<!--  Main Content-->
 	<section>
 		<div class="container-fluid">
+		<div class="row">
+				<div class="col p-3">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item" aria-current="page"><a
+								href="${pageContext.request.contextPath }/App/Home">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page"><a
+								href="${pageContext.request.contextPath }/App/UploadPhoto.jsp">Upload Photos</a></li>
+						</ol>
+					</nav>
+				</div>
+			</div>
 			<div class="row">
 				<aside class="col-lg-3 col-md-4 order-lg-first order-last">
 					<comp:dashboard username="${USER_SESSION.currentUser.name }" />

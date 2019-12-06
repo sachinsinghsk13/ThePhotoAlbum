@@ -22,7 +22,14 @@ public class GetAlbumThumb extends HttpServlet {
 			Long albumId  = Long.parseLong(request.getParameter("albumId"));
 			AlbumDao albumDao = (AlbumDao) getServletContext().getAttribute(Constants.ALBUM_DAO	);
 			try {
-				response.getOutputStream().write(albumDao.getAlbumThumb(userId, albumId));
+				byte[] data = albumDao.getAlbumThumb(userId, albumId);
+				if (data != null) {
+					response.getOutputStream().write(data);
+				}
+				else {
+					byte[] logo = getServletContext().getResourceAsStream("/WEB-INF/logo.png").readAllBytes();
+					response.getOutputStream().write(logo);
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
