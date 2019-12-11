@@ -67,7 +67,7 @@ public class PhotoDaoImpl implements PhotoDao {
 	public List<Photo> getAllPhotosOfAlbumInLimit(Long userId, Long albumId, int offset, int limit)
 			throws SQLException {
 		Connection connection = dataSource.getConnection();
-		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_ALL_PHOTOS_OF_ALBUM));
+		PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.GET_ALL_PHOTOS_OF_ALBUM_IN_LIMIT));
 		statement.setLong(1, userId);
 		statement.setLong(2, albumId);
 		statement.setInt(3, offset);
@@ -80,13 +80,14 @@ public class PhotoDaoImpl implements PhotoDao {
 			photo.setTitle(rs.getString(2));
 			photo.setDescription(rs.getString(3));
 			photo.setUploadDate(rs.getDate(4));
-			photo.setBinaryData(rs.getBytes(5));
-			photo.setThumbBinaryData(rs.getBytes(6));
-			photo.setWidth(rs.getInt(7));
-			photo.setHeight(rs.getInt(8));
-			photo.setOrientation(Orientation.valueOf(rs.getString(9)));
-			photo.setQuality(ImageQuality.valueOf(rs.getString(10)));
-			photo.setFavourite(Favourite.valueOf(rs.getString(11)));
+			photo.setFileSize(rs.getDouble(5));
+			photo.setBinaryData(rs.getBytes(6));
+			photo.setThumbBinaryData(rs.getBytes(7));
+			photo.setWidth(rs.getInt(8));
+			photo.setHeight(rs.getInt(9));
+			photo.setOrientation(Orientation.valueOf(rs.getString(10)));
+			photo.setQuality(ImageQuality.valueOf(rs.getString(11)));
+			photo.setFavourite(Favourite.valueOf(rs.getString(12)));
 			photo.setUserId(userId);
 			photo.setAlbumId(albumId);
 			photos.add(photo);

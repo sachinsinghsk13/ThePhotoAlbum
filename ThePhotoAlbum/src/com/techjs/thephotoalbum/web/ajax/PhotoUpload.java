@@ -73,7 +73,13 @@ public class PhotoUpload extends HttpServlet {
 				photo.setThumbBinaryData(photo.getBinaryData());
 				ByteArrayInputStream bais = new ByteArrayInputStream(photo.getBinaryData());
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				Thumbnails.of(bais).size(200, 200).outputFormat("jpg").toOutputStream(baos);
+				if (photo.getOrientation() == Orientation.LANDSCAPE)
+					Thumbnails.of(bais).size(640, 540).outputFormat("jpg").toOutputStream(baos);
+				
+				else if (photo.getOrientation() == Orientation.PORTRAIT) 
+					Thumbnails.of(bais).size(480, 640).outputFormat("jpg").toOutputStream(baos);
+				else
+					Thumbnails.of(bais).size(600, 600).outputFormat("jpg").toOutputStream(baos);
 				photo.setThumbBinaryData(baos.toByteArray());
 				photoDao.insertPhoto(photo);
 				

@@ -28,6 +28,14 @@ a#logo-text {
 	margin-top: 8px;
 	vertical-align: middle;
 	width: 100%;
+	border: 2px solid white;
+	transition: transform 300ms;
+}
+
+.image-grid-column img:hover {
+	transform:scale(1.1);
+	cursor:pointer;
+	transition: transform 1s;
 }
 
 @media screen and (max-width: 800px) {
@@ -44,3 +52,4 @@ a#logo-text {
 		max-width: 100%;
 	}
 }
+

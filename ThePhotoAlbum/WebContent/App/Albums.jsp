@@ -46,8 +46,8 @@
 					</div>
 					<div class="row p-2">
 						<c:choose>
-							<c:when test="${fn:length(albums) gt 0 }">
-								<c:forEach var="album" items="${albums }">
+							<c:when test="${fn:length(albums) gt 0}">
+								<c:forEach var="album" items="${albums}">
 									<div class="col-lg-4 col-md-6 col-sm-12 my-2"
 										title="${album.description }">
 										<div class="container album shadow-sm p-2">
@@ -59,8 +59,8 @@
 												</div>
 												<div class=" offset-1 col-7">
 													<h6>${album.title }</h6>
-													<p class="text-muted">${album.totalPhotos }Photos</p>
-													<a href="" class="btn btn-sm btn-primary">View Photos</a>
+													<p class="text-muted">${album.totalPhotos } Photos</p>
+													<a href="${pageContext.request.contextPath}/App/AlbumView?albumId=${album.id}" class="btn btn-sm btn-primary">View Photos</a>
 												</div>
 											</div>
 										</div>
@@ -75,7 +75,14 @@
 											<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/App/Albums?page=${paginationContext.currentPage - 1}">Previous</a></li>
 										</c:if>
 										<c:forEach begin="1" end="${paginationContext.totalPages}" var="current">
-											<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/App/Albums?page=${current}">${current}</a></li>
+											<c:choose>
+												<c:when test="${current eq paginationContext.currentPage}">
+													<li class="page-item active"><a class="page-link" href="${pageContext.request.contextPath}/App/Albums?page=${current}">${current}</a></li>
+												</c:when>
+												<c:otherwise>
+													<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/App/Albums?page=${current}">${current}</a></li>
+												</c:otherwise>
+											</c:choose>
 										</c:forEach>
 										<c:if test="${paginationContext.currentPage lt paginationContext.totalPages }">
 											<li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/App/Albums?page=${paginationContext.currentPage + 1}">Next</a></li>

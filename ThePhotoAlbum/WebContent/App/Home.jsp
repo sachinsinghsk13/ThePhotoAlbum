@@ -51,7 +51,7 @@
 										</c:if>
 
 										<img
-											src="${pageContext.request.contextPath }/App/GetPhoto?albumId=${photo.albumId}&photoId=${photo.id}"
+											src="${pageContext.request.contextPath }/App/GetPhotoThumb?albumId=${photo.albumId}&photoId=${photo.id}"
 											title="Title :  ${photo.title }" />
 
 										<c:if
