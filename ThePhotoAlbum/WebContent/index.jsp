@@ -51,9 +51,9 @@
 							</div>
 						</div>
 						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" id="remember"
-								name="rememberme" value="YES" /> <label
-								class="custom-control-label text-dark" for="remember">Remember
+							<input type="checkbox" class="custom-control-input" id="savepassword"
+								name="savepassword" value="YES" /> <label
+								class="custom-control-label text-dark" for="savepassword">Remember
 								Me</label>
 						</div>
 						<div class="form-group">

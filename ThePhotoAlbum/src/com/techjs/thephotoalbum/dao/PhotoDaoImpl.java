@@ -47,7 +47,7 @@ public class PhotoDaoImpl implements PhotoDao {
 			photo.setId(rs.getLong(1));
 			photo.setTitle(rs.getString(2));
 			photo.setDescription(rs.getString(3));
-			photo.setUploadDate(rs.getDate(4));
+			photo.setUploadDate(rs.getTimestamp(4));
 			photo.setBinaryData(rs.getBytes(5));
 			photo.setThumbBinaryData(rs.getBytes(6));
 			photo.setWidth(rs.getInt(7));
@@ -79,7 +79,7 @@ public class PhotoDaoImpl implements PhotoDao {
 			photo.setId(rs.getLong(1));
 			photo.setTitle(rs.getString(2));
 			photo.setDescription(rs.getString(3));
-			photo.setUploadDate(rs.getDate(4));
+			photo.setUploadDate(rs.getTimestamp(4));
 			photo.setFileSize(rs.getDouble(5));
 			photo.setBinaryData(rs.getBytes(6));
 			photo.setThumbBinaryData(rs.getBytes(7));
@@ -179,7 +179,7 @@ public class PhotoDaoImpl implements PhotoDao {
 			photo.setId(rs.getLong(1));
 			photo.setTitle(rs.getString(2));
 			photo.setDescription(rs.getString(3));
-			photo.setUploadDate(rs.getDate(4));
+			photo.setUploadDate(rs.getTimestamp(4));
 			photo.setFileSize(rs.getDouble(5));
 			photo.setBinaryData(rs.getBytes(6));
 			photo.setThumbBinaryData(rs.getBytes(7));

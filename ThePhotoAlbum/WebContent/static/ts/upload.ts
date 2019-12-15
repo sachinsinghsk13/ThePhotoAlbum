@@ -34,7 +34,8 @@ class Photo {
    * Starts Initializing This Photo Object. onready function is fired when initialization completes
    */
   private initialize(): void {
-    this.title = this.file.name.substr(0, 30);
+    let str = this.file.name.substr(0, 30);
+    this.title = str.substr(0, str.lastIndexOf("."));
     this.filename = this.file.name;
     this.size = this.file.size / 1024;
     this.description = "";
@@ -205,7 +206,7 @@ class PhotoPreviewManager {
           xhr.upload.addEventListener("progress", evt => {
             if (evt.lengthComputable) {
               let percent = ((evt.loaded / evt.total) * 100).toFixed(0);
-              $("#progressbar-div .progress-bar").css("width", percent+"%");
+              $("#progressbar-div .progress-bar").css("width", percent + "%");
             }
           });
         }
@@ -218,8 +219,14 @@ class PhotoPreviewManager {
       url: "/ThePhotoAlbum/App/PhotoUpload"
     }).then(() => {
       $("#progressbar-div").addClass("d-none");
-      this.previewContainer.css({"opacity":1,"pointer-events":"auto"});
-      this.previewContainer.empty().append($("<p>").addClass("text-muted").addClass("text-center").addClass("h6").text("Select Images to See Preview"));
+      this.previewContainer.css({ opacity: 1, "pointer-events": "auto" });
+      this.previewContainer.empty().append(
+        $("<p>")
+          .addClass("text-muted")
+          .addClass("text-center")
+          .addClass("h6")
+          .text("Select Images to See Preview")
+      );
     });
   }
   private showPreview() {
@@ -325,49 +332,126 @@ class PhotoPreviewManager {
     this.previewContainer.append(animation);
   }
 }
+
+interface ModalParam {
+  openBtnId: string;
+  modalContainerId: string;
+  albumTitleFieldId: string;
+  albumDescriptionFieldId: string;
+  createAlbumBtnId: string;
+  targetAlbumSelectFieldId: string,
+  postURL: string;
+}
+
 class AlbumManager {
-  private albumTitleField: JQuery<HTMLElement>;
-  private albumDescriptionField: JQuery<HTMLElement>;
-  private albumCreateButton: JQuery<HTMLElement>;
-  private targetAlbumSelectField: JQuery<HTMLElement>;
-  constructor() {
-    this.albumTitleField = $(`#album_title`);
-    this.albumDescriptionField = $(`#album_description`);
-    this.albumCreateButton = $(`#album_create_btn`);
-    this.targetAlbumSelectField = $(`#target_album`);
-    // load the user albums
+  openBtn: JQuery<HTMLElement>;
+  modalContainer: JQuery<HTMLElement>;
+  albumTitleField: JQuery<HTMLElement>;
+  albumDescriptionField: JQuery<HTMLElement>;
+  createAlbumBtn: JQuery<HTMLElement>;
+  targetAlbumSelectField: JQuery<HTMLElement>;
+  postURL: string;
+  constructor(params: ModalParam) {
+    this.openBtn = $(`#${params.openBtnId}`);
+    this.modalContainer = $(`#${params.modalContainerId}`);
+    this.albumTitleField = $(`#${params.albumTitleFieldId}`);
+    this.albumDescriptionField = $(`#${params.albumDescriptionFieldId}`);
+    this.createAlbumBtn = $(`#${params.createAlbumBtnId}`);
+    this.targetAlbumSelectField = $(`#${params.targetAlbumSelectFieldId}`);
+    this.postURL = params.postURL;
     this.loadUserAlbums();
-    this.albumCreateButton.on("click", evt => {
-      let title = <string>this.albumTitleField.val();
-      let description = <string>this.albumDescriptionField.val();
+    this.initialize();
+  }
 
-      if (!title) {
-        alert("Album Title Can't be Empty");
-        return;
-      }
+  private initialize(): void {
+    this.openBtn.click(() => {
+      this.modalContainer.modal("show");
+    });
+    this.albumTitleField.on("change blur", () => {
+      this.hideFeedback(this.albumTitleField);
+    });
 
-      if (!description) description = "";
+    this.albumDescriptionField.on("change blur", () => {
+      this.hideFeedback(this.albumDescriptionField);
+    });
 
-      $.post("/ThePhotoAlbum/App/CreateAlbum", {
-        title: title,
-        description: description
-      }).done(() => {
-        this.loadUserAlbums();
-        $("#album_alerts").append(
-          $("<div>")
-            .addClass("alert")
-            .addClass("alert-info")
-            .addClass("alert-dismissible")
-            .html("Album Created  <strong> " + title + "</strong>")
-            .fadeOut(4000)
-        );
-        this.albumTitleField.val("");
-        this.albumDescriptionField.val("");
-      });
+    this.createAlbumBtn.click(() => {
+      let title: string = <string>this.albumTitleField.val();
+      let description: string = <string>this.albumDescriptionField.val();
+      if (!this.validate(title, description)) return;
+      this.createAlbum(title, description);
     });
   }
 
-  loadUserAlbums() {
+  private validate(title: string, description: string): boolean {
+    if (!title) {
+      this.showFeedback(this.albumTitleField, "Please Enter Album Title.");
+      return false;
+    } else if (title.length > 30) {
+      this.showFeedback(
+        this.albumTitleField,
+        "Album Title Can Only Be 30 Characters Long"
+      );
+      return false;
+    } else return true;
+  }
+
+  private showFeedback(field: JQuery<HTMLElement>, msg: string): void {
+    this.hideFeedback(field);
+    field.addClass("is-invalid");
+    let alert = $("<div>")
+      .addClass("invalid-feedback")
+      .text(msg);
+    field.parent().append(alert);
+  }
+
+  private hideFeedback(field: JQuery<HTMLElement>): void {
+    field.removeClass("is-invalid");
+    field
+      .parent()
+      .children()
+      .remove(".invalid-feedback");
+  }
+
+  private createAlbum(title: string, description: string): void {
+    this.createAlbumBtn
+      .addClass("disabled")
+      .html(
+        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating`
+      );
+    $.post(this.postURL, {
+      title: title,
+      description: description
+    })
+      .done(() => {
+        this.loadUserAlbums();
+        this.createAlbumBtn.removeClass("disabled").html(`Create`);
+        this.resetFields();
+        let nofication = $(` <div class="alert alert-light">
+              <i class="fas fa-check-circle text-success"></i> Album <strong>${title}</strong> Created Successfully
+          </div>`);
+        this.modalContainer
+          .find(".modal-body")
+          .remove(".alert")
+          .append(nofication);
+      })
+      .fail(() => {
+        this.createAlbumBtn.removeClass("disabled").html(`Try Again`);
+        let nofication = $(` <div class="alert alert-light">
+          <i class="fas fa-times-circle  text-danger"></i> Failed To Create Album
+          </div>`);
+        this.modalContainer
+          .find(".modal-body")
+          .remove(".alert")
+          .append(nofication);
+      });
+  }
+  
+  private resetFields() {
+      this.albumTitleField.val('');
+      this.albumDescriptionField.val('');
+  }
+  private loadUserAlbums() {
     $.get("/ThePhotoAlbum/App/AlbumList", data => {
       let list = JSON.parse(data);
       this.targetAlbumSelectField.empty();
@@ -386,5 +470,13 @@ $(() => {
     "image-preview-container",
     5
   );
-  let albumManager = new AlbumManager();
+  let albumManager = new AlbumManager({
+    openBtnId: "album-create-btn",
+    modalContainerId: "createAlbumModal",
+    albumTitleFieldId: "albumTitle",
+    albumDescriptionFieldId: "albumDescription",
+    createAlbumBtnId: "albumCreateBtn",
+    postURL: "/ThePhotoAlbum/App/CreateAlbum",
+    targetAlbumSelectFieldId:"target_album"
+  });
 });

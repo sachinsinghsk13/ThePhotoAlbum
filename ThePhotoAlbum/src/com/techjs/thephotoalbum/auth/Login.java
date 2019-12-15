@@ -27,7 +27,7 @@ public class Login extends HttpServlet {
 		
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		boolean savePassword = (request.getParameter("rememeberme") != null);
+		boolean savePassword = (request.getParameter("savepassword") != null);
 		LoginCredential login = new LoginCredential(email, password);
 		
 		// authenticate the email and password
@@ -43,6 +43,7 @@ public class Login extends HttpServlet {
 				session.setAttribute(Constants.USER_SESSION, userSession);
 				if (savePassword) {
 					setCredentialsCookies(response, login);
+					System.out.println("cookie set");
 				}
 				
 				response.sendRedirect(request.getContextPath() + "/App/Home");
@@ -68,7 +69,6 @@ public class Login extends HttpServlet {
 		passwordCookie.setMaxAge(30 * 24 * 60 * 60); // cookie is valid for 30 days
 		response.addCookie(emailCookie);
 		response.addCookie(passwordCookie);
-		
 	}
 
 }

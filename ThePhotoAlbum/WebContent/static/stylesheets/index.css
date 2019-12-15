@@ -37,7 +37,17 @@ a#logo-text {
 	cursor:pointer;
 	transition: transform 1s;
 }
+#img-view-row {
+    background-color: black;
+}
+#img-view-row div {
+    max-height: 400px;
+}
 
+#img-view-row img {
+    width: 300px;
+    height: 100%;
+}
 @media screen and (max-width: 800px) {
 	.column {
 		flex: 50%;

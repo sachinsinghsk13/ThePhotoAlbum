@@ -55,11 +55,11 @@
 										<c:if test="${status.index%2 eq 0 }">
 											<div class="image-grid-column">
 										</c:if>
-
+										<a href="${pageContext.request.contextPath}/App/ViewPhoto?albumId=${photo.albumId}&photoId=${photo.id}">
 										<img
 											src="${pageContext.request.contextPath }/App/GetPhotoThumb?albumId=${photo.albumId}&photoId=${photo.id}"
 											title="Title :  ${photo.title }" />
-
+										</a>
 										<c:if
 											test="${((status.index +1) % 2 eq 0) or (status.count eq fn:length(photos)) }">
 											</div>

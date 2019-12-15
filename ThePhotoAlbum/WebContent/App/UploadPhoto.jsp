@@ -1,5 +1,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/import" prefix="import"%>
 <%@ taglib tagdir="/WEB-INF/tags/components" prefix="comp"%>
+<%@ taglib tagdir="/WEB-INF/tags/modals" prefix="modal"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
@@ -40,30 +41,15 @@
 						<div class="row p-2  shadow-sm bg-light border">
 							<h5>Upload New Photos</h5>
 						</div>
-						<div class="row p-3">
-							<div class="col-12">
-								<h5>Create Album</h5>
-							</div>
-							<div class="col-12" id="album_alerts"></div>
-							<div class="col-lg-4 col-md-12 my-2">
-								<textarea id="album_title" cols="30" rows="2"
-									class="form-control" placeholder="Album Title"
-									style="resize: none;"></textarea>
-							</div>
-							<div class="col-lg-4 col-md-12 my-2">
-								<textarea name="" id="album_description" cols="30" rows="2"
-									class="form-control" placeholder="Album Description"
-									style="resize: none;"></textarea>
-							</div>
-							<div class="col-lg-4 col-md-12 my-2">
-								<button class="btn btn-primary btn-block" id="album_create_btn">
-									Create Album</button>
-							</div>
-						</div>
-						<hr />
+						<modal:create-album-modal/>
 						<div class="row p-2">
 							<div class="col">
 								<h5>Select Album And Photos</h5>
+							</div>
+						</div>
+						<div class="row px-3">
+							<div class="col">
+								<button class="btn btn-danger btn-sm float-right" id="album-create-btn"><i class="fas fa-plus"></i> Create Album</button>
 							</div>
 						</div>
 						<div class="form-row p-3">

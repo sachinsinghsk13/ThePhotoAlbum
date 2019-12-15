@@ -49,11 +49,11 @@
 										<c:if test="${status.index%2 eq 0 }">
 											<div class="image-grid-column">
 										</c:if>
-
+									<a href="${pageContext.request.contextPath}/App/ViewPhoto?albumId=${photo.albumId}&photoId=${photo.id}">
 										<img
-											src="${pageContext.request.contextPath }/App/GetPhotoThumb?albumId=${photo.albumId}&photoId=${photo.id}"
+											src="${pageContext.request.contextPath}/App/GetPhotoThumb?albumId=${photo.albumId}&photoId=${photo.id}"
 											title="Title :  ${photo.title }" />
-
+									</a>
 										<c:if
 											test="${((status.index +1) % 2 eq 0) or (status.count eq fn:length(recentUploads)) }">
 								</div>
@@ -93,8 +93,8 @@
 											</div>
 											<div class=" offset-1 col-7">
 												<h6>${album.title }</h6>
-												<p class="text-muted">${album.totalPhotos }Photos</p>
-												<a href="" class="btn btn-sm btn-primary">View Photos</a>
+												<p class="text-muted">${album.totalPhotos } Photos</p>
+												<a href="${pageContext.request.contextPath}/App/AlbumView?albumId=${album.id}" class="btn btn-sm btn-primary">View Photos</a>
 											</div>
 										</div>
 									</div>

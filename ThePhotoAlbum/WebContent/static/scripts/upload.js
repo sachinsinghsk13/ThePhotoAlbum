@@ -31,7 +31,8 @@ class Photo {
      * Starts Initializing This Photo Object. onready function is fired when initialization completes
      */
     initialize() {
-        this.title = this.file.name.substr(0, 30);
+        let str = this.file.name.substr(0, 30);
+        this.title = str.substr(0, str.lastIndexOf("."));
         this.filename = this.file.name;
         this.size = this.file.size / 1024;
         this.description = "";
@@ -168,8 +169,12 @@ class PhotoPreviewManager {
             url: "/ThePhotoAlbum/App/PhotoUpload"
         }).then(() => {
             $("#progressbar-div").addClass("d-none");
-            this.previewContainer.css({ "opacity": 1, "pointer-events": "auto" });
-            this.previewContainer.empty().append($("<p>").addClass("text-muted").addClass("text-center").addClass("h6").text("Select Images to See Preview"));
+            this.previewContainer.css({ opacity: 1, "pointer-events": "auto" });
+            this.previewContainer.empty().append($("<p>")
+                .addClass("text-muted")
+                .addClass("text-center")
+                .addClass("h6")
+                .text("Select Images to See Preview"));
         });
     }
     showPreview() {
@@ -261,37 +266,96 @@ class PhotoPreviewManager {
     }
 }
 class AlbumManager {
-    constructor() {
-        this.albumTitleField = $(`#album_title`);
-        this.albumDescriptionField = $(`#album_description`);
-        this.albumCreateButton = $(`#album_create_btn`);
-        this.targetAlbumSelectField = $(`#target_album`);
-        // load the user albums
+    constructor(params) {
+        this.openBtn = $(`#${params.openBtnId}`);
+        this.modalContainer = $(`#${params.modalContainerId}`);
+        this.albumTitleField = $(`#${params.albumTitleFieldId}`);
+        this.albumDescriptionField = $(`#${params.albumDescriptionFieldId}`);
+        this.createAlbumBtn = $(`#${params.createAlbumBtnId}`);
+        this.targetAlbumSelectField = $(`#${params.targetAlbumSelectFieldId}`);
+        this.postURL = params.postURL;
         this.loadUserAlbums();
-        this.albumCreateButton.on("click", evt => {
+        this.initialize();
+    }
+    initialize() {
+        this.openBtn.click(() => {
+            this.modalContainer.modal("show");
+        });
+        this.albumTitleField.on("change blur", () => {
+            this.hideFeedback(this.albumTitleField);
+        });
+        this.albumDescriptionField.on("change blur", () => {
+            this.hideFeedback(this.albumDescriptionField);
+        });
+        this.createAlbumBtn.click(() => {
             let title = this.albumTitleField.val();
             let description = this.albumDescriptionField.val();
-            if (!title) {
-                alert("Album Title Can't be Empty");
+            if (!this.validate(title, description))
                 return;
-            }
-            if (!description)
-                description = "";
-            $.post("/ThePhotoAlbum/App/CreateAlbum", {
-                title: title,
-                description: description
-            }).done(() => {
-                this.loadUserAlbums();
-                $("#album_alerts").append($("<div>")
-                    .addClass("alert")
-                    .addClass("alert-info")
-                    .addClass("alert-dismissible")
-                    .html("Album Created  <strong> " + title + "</strong>")
-                    .fadeOut(4000));
-                this.albumTitleField.val("");
-                this.albumDescriptionField.val("");
-            });
+            this.createAlbum(title, description);
         });
+    }
+    validate(title, description) {
+        if (!title) {
+            this.showFeedback(this.albumTitleField, "Please Enter Album Title.");
+            return false;
+        }
+        else if (title.length > 30) {
+            this.showFeedback(this.albumTitleField, "Album Title Can Only Be 30 Characters Long");
+            return false;
+        }
+        else
+            return true;
+    }
+    showFeedback(field, msg) {
+        this.hideFeedback(field);
+        field.addClass("is-invalid");
+        let alert = $("<div>")
+            .addClass("invalid-feedback")
+            .text(msg);
+        field.parent().append(alert);
+    }
+    hideFeedback(field) {
+        field.removeClass("is-invalid");
+        field
+            .parent()
+            .children()
+            .remove(".invalid-feedback");
+    }
+    createAlbum(title, description) {
+        this.createAlbumBtn
+            .addClass("disabled")
+            .html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating`);
+        $.post(this.postURL, {
+            title: title,
+            description: description
+        })
+            .done(() => {
+            this.loadUserAlbums();
+            this.createAlbumBtn.removeClass("disabled").html(`Create`);
+            this.resetFields();
+            let nofication = $(` <div class="alert alert-light">
+              <i class="fas fa-check-circle text-success"></i> Album <strong>${title}</strong> Created Successfully
+          </div>`);
+            this.modalContainer
+                .find(".modal-body")
+                .remove(".alert")
+                .append(nofication);
+        })
+            .fail(() => {
+            this.createAlbumBtn.removeClass("disabled").html(`Try Again`);
+            let nofication = $(` <div class="alert alert-light">
+          <i class="fas fa-times-circle  text-danger"></i> Failed To Create Album
+          </div>`);
+            this.modalContainer
+                .find(".modal-body")
+                .remove(".alert")
+                .append(nofication);
+        });
+    }
+    resetFields() {
+        this.albumTitleField.val('');
+        this.albumDescriptionField.val('');
     }
     loadUserAlbums() {
         $.get("/ThePhotoAlbum/App/AlbumList", data => {
@@ -305,5 +369,13 @@ class AlbumManager {
 }
 $(() => {
     let preview = new PhotoPreviewManager("photo_upload_input", "image-preview-container", 5);
-    let albumManager = new AlbumManager();
+    let albumManager = new AlbumManager({
+        openBtnId: "album-create-btn",
+        modalContainerId: "createAlbumModal",
+        albumTitleFieldId: "albumTitle",
+        albumDescriptionFieldId: "albumDescription",
+        createAlbumBtnId: "albumCreateBtn",
+        postURL: "/ThePhotoAlbum/App/CreateAlbum",
+        targetAlbumSelectFieldId: "target_album"
+    });
 });

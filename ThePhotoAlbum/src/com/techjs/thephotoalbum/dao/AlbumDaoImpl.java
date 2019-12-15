@@ -43,8 +43,8 @@ public class AlbumDaoImpl implements AlbumDao {
 			album.setId(rs.getLong(1));
 			album.setTitle(rs.getString(2));
 			album.setDescription(rs.getString(3));
-			album.setCreateTime(rs.getDate(4));
-			album.setLastPhotoUploadTime(rs.getDate(5));
+			album.setCreateTime(rs.getTimestamp(4));
+			album.setLastPhotoUploadTime(rs.getTimestamp(5));
 			album.setAlbumCover(rs.getBytes(6));
 			album.setUserId(userId);
 			albums.add(album);
@@ -67,8 +67,8 @@ public class AlbumDaoImpl implements AlbumDao {
 			album.setId(rs.getLong(1));
 			album.setTitle(rs.getString(2));
 			album.setDescription(rs.getString(3));
-			album.setCreateTime(rs.getDate(4));
-			album.setLastPhotoUploadTime(rs.getDate(5));
+			album.setCreateTime(rs.getTimestamp(4));
+			album.setLastPhotoUploadTime(rs.getTimestamp(5));
 			album.setAlbumCover(rs.getBytes(6));
 			album.setUserId(userId);
 			albums.add(album);
@@ -103,8 +103,8 @@ public class AlbumDaoImpl implements AlbumDao {
 			album = new Album();
 			album.setTitle(rs.getString(1));
 			album.setDescription(rs.getString(2));
-			album.setCreateTime(rs.getDate(3));
-			album.setLastPhotoUploadTime(rs.getDate(4));
+			album.setCreateTime(rs.getTimestamp(3));
+			album.setLastPhotoUploadTime(rs.getTimestamp(4));
 			album.setAlbumCover(rs.getBytes(5));
 			album.setId(albumId);
 			album.setUserId(userId);

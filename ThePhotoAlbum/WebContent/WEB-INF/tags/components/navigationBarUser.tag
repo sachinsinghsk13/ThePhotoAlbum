@@ -1,3 +1,4 @@
+
 <%@ tag body-content="empty" %>
 <nav
 	class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
@@ -11,7 +12,7 @@
 	</button>
 	<div class="collapse navbar-collapse ml-5" id="navbarmenu">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active"><a href="#" class="nav-link"><i
+			<li class="nav-item active"><a href="${pageContext.request.contextPath}/App/Home" class="nav-link"><i
 					class="fas fa-home"></i> Home</a></li>
 			<li class="nav-item"><a href="#" class="nav-link"><i
 					class="fas fa-image"></i> Gallery</a></li>
@@ -20,6 +21,8 @@
 					Albums</a></li>
 			<li class="nav-item"><a href="#" class="nav-link"><i
 					class="fas fa-upload"></i> Recent Uploads</a></li>
+			<li class="nav-item"><a href="#" class="nav-link"><i
+					class="fas fa-heart"></i> Favourites</a></li>
 		</ul>
 		<ul class="navbar-nav ml-auto">
 			<li class="nav-item"><a href="#" class="nav-link"> <i
