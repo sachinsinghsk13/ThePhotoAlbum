@@ -37,7 +37,8 @@
 				<div class="container shadow rounded my-3">
 					<div class="row p-2  shadow-sm bg-light text-dark border">
 						<h5>
-							<i class="fas fa-clock text-primary"></i> Recent Uploads
+							<i class="fas fa-clock text-primary"></i> Recent Uploads <span
+							class="badge badge-secondary">${totalRecentUploads}</span>
 						</h5>
 					</div>
 					<div class="row p-3 justify-content-center">
@@ -118,16 +119,40 @@
 				</c:if>
 
 			</div>
+			<!-- Favourites Photos -->
 			<div class="container shadow-sm rounded my-3">
 				<div class="row p-2 shadow-sm bg-light">
 					<h5>
 						<i class="fas fa-heart text-danger"></i> Favourites <span
-							class="badge badge-secondary">103</span>
+							class="badge badge-secondary"> ${totalFavourites}</span>
 					</h5>
 				</div>
-				<div class="row p-2"></div>
-				<div class="p-3 text-center">
-					<p class="h6 text-muted ">No Favourities Marked Yet.</p>
+				<div class="row p-3 justify-content-center">
+						<c:choose>
+							<c:when test="${fn:length(favourites) gt 0 }">
+								<div class="image-grid-row">
+									<c:forEach var="photo" items="${favourites}"
+										varStatus="status">
+										<c:if test="${status.index%2 eq 0 }">
+											<div class="image-grid-column">
+										</c:if>
+									<a href="${pageContext.request.contextPath}/App/ViewPhoto?albumId=${photo.albumId}&photoId=${photo.id}">
+										<img
+											src="${pageContext.request.contextPath}/App/GetPhotoThumb?albumId=${photo.albumId}&photoId=${photo.id}"
+											title="Title :  ${photo.title }" />
+									</a>
+										<c:if
+											test="${((status.index +1) % 2 eq 0) or (status.count eq fn:length(favourites)) }">
+								</div>
+								</c:if>
+								</c:forEach>
+					</div>
+					</c:when>
+					<c:otherwise>
+						<p class="h6 text-muted">You Don't Have Marked Any Photo
+							Favourite Yet.</p>
+					</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 			</main>

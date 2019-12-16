@@ -19,9 +19,9 @@
 			<li class="nav-item"><a href="${pageContext.request.contextPath}/App/Albums" class="nav-link"
 				title="View All Your Albums"><i class="fas fa-images"></i>
 					Albums</a></li>
-			<li class="nav-item"><a href="#" class="nav-link"><i
+			<li class="nav-item"><a href="${pageContext.request.contextPath}/App/RecentUploads" class="nav-link"><i
 					class="fas fa-upload"></i> Recent Uploads</a></li>
-			<li class="nav-item"><a href="#" class="nav-link"><i
+			<li class="nav-item"><a href="${pageContext.request.contextPath}/App/Favourites" class="nav-link"><i
 					class="fas fa-heart"></i> Favourites</a></li>
 		</ul>
 		<ul class="navbar-nav ml-auto">

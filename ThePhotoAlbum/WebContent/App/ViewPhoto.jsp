@@ -20,7 +20,7 @@
         <div class="container-fluid shadow-sm my-3">
             <div class="row p-3" id="img-view-row">
                 <div class="col d-flex justify-content-center">
-                    <img src="${pageContext.request.contextPath}/App/GetPhoto?albumId=${photo.albumId}&photoId=${photo.id}" alt="">
+                    <img src="${pageContext.request.contextPath}/App/GetPhotoThumb?albumId=${photo.albumId}&photoId=${photo.id}" alt="">
                 </div>
             </div>
             <div class="row p-3">

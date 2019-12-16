@@ -36,8 +36,16 @@ public class Homepage extends HttpServlet {
 			}
 			request.setAttribute("albums", albums);
 			
-			List<Photo> recents = photoDao.getRecentPhotos(userId);
+			List<Photo> recents = photoDao.getRecentPhotos(userId, 0, 12);
 			request.setAttribute("recentUploads", recents);
+			Integer totalRecentUploads = photoDao.getTotalNoOfPhotosOfUser(userId);
+			request.setAttribute("totalRecentUploads", totalRecentUploads);
+
+			List<Photo> favourites = photoDao.getFavouritePhotos(userId, 0, 12);
+			request.setAttribute("favourites", favourites);
+			Integer totalFavourites = photoDao.getTotalNoOfFavouritePhotos(userId);
+			request.setAttribute("totalFavourites", totalFavourites);
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
