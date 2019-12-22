@@ -9,10 +9,28 @@
 * Eclipse Java EE IDE
 * MySQL Server 8.0
 
-* An Internet Connection is needed for downloading the maven dependencies. *
+*An Internet Connection is needed for downloading the maven dependencies.*
 
 ### Create Database in MySQL
 ```sql 
-  CREATE DATABASE MyPhotoAlbum;
+  CREATE DATABASE ThePhotoAlbum;
 ```
 
+### Modify The Configurations Files
+Open *ThePhotoAlbum/resources/configs/datasource.properties*
+```properties
+  jdbc.driverClassName=com.mysql.cj.jdbc.Driver
+  jdbc.url=jdbc:mysql://localhost:3306/ThePhotoAlbum?useSSL=false
+  jdbc.username=your_username
+  jdbc.password=your_password
+```
+
+Open *ThePhotoAlbum/resources/configs/gamilAuthentication.properties*
+```properties
+  email=your_email
+  password=your_password
+```
+** Google Account Security must be reduced before using it **
+
+### We're Ready
+Now Deploy The Project
