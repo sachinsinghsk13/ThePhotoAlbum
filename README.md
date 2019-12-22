@@ -34,3 +34,12 @@ Open *ThePhotoAlbum/resources/configs/gamilAuthentication.properties*
 
 ### We're Ready
 Now Deploy The Project
+
+### Technologies, Frameworks And Libraries Used in Project
+* Servlet 4.0
+* JSP 2.0
+* jQuery 3.3.3
+* Bootstrap 4.3
+* Ajax
+* Gson JSON Library
+* Typescript
