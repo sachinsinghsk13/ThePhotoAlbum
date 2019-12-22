@@ -121,14 +121,14 @@ public class PhotoDaoImpl implements PhotoDao {
 	}
 
 	@Override
-	public void updatePhoto(Photo photo, Album album) throws SQLException {
+	public void updatePhoto(Photo photo) throws SQLException {
 		try (Connection connection = dataSource.getConnection()) {
 			PreparedStatement statement = connection
 					.prepareStatement(queries.getQuery(SQLQueriesConstants.UPDATE_PHOTO));
 			statement.setString(1, photo.getTitle());
 			statement.setString(2, photo.getDescription());
-			statement.setLong(3, album.getUserId());
-			statement.setLong(4, album.getId());
+			statement.setLong(3, photo.getUserId());
+			statement.setLong(4, photo.getAlbumId());
 			statement.setLong(5, photo.getId());
 			statement.executeUpdate();
 		}
@@ -161,13 +161,12 @@ public class PhotoDaoImpl implements PhotoDao {
 	}
 
 	@Override
-	public void deletePhoto(Long photoId, Album album) throws SQLException {
+	public void deletePhoto(Photo photo) throws SQLException {
 		try (Connection connection = dataSource.getConnection()) {
 			PreparedStatement statement = connection
 					.prepareStatement(queries.getQuery(SQLQueriesConstants.DELETE_PHOTO));
-			statement.setLong(3, album.getUserId());
-			statement.setLong(4, album.getId());
-			statement.setLong(5, photoId);
+			statement.setLong(1, photo.getUserId() );
+			statement.setLong(2, photo.getId());
 			statement.executeUpdate();
 		}
 	}
@@ -270,6 +269,17 @@ public class PhotoDaoImpl implements PhotoDao {
 				count = rs.getInt(1);
 			}
 			return count;
+		}
+	}
+	
+	@Override
+	public void markFavourite(Photo photo) throws SQLException {
+		try (Connection connection = dataSource.getConnection()) {
+			PreparedStatement statement = connection.prepareStatement(queries.getQuery(SQLQueriesConstants.MARK_PHOTO_AS_FAVOURITE));
+			statement.setString(1, photo.getFavourite().toString());
+			statement.setLong(2, photo.getUserId());
+			statement.setLong(3, photo.getId());
+			statement.executeUpdate();
 		}
 	}
 }

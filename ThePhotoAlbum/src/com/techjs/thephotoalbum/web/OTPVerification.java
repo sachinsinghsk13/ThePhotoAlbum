@@ -30,6 +30,7 @@ public class OTPVerification extends HttpServlet {
 			UserDao userDao = (UserDao) request.getServletContext().getAttribute(Constants.USER_DAO);
 			try {
 				userDao.insertUser(user);
+				response.sendRedirect("index.jsp");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

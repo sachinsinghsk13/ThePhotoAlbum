@@ -98,8 +98,10 @@ class PhotoPreviewManager {
         this.fileInput.on("change", event => {
             this.showAnimation();
             let files = event.target.files;
-            if (files == null)
+            if (files == null || files.length == 0) {
+                this.showSelectPhotos();
                 return;
+            }
             else if (files.length > this.maxFileUpload) {
                 alert(`Only ${this.maxFileUpload} is allowed for upload at once.`);
                 return;
@@ -170,11 +172,7 @@ class PhotoPreviewManager {
         }).then(() => {
             $("#progressbar-div").addClass("d-none");
             this.previewContainer.css({ opacity: 1, "pointer-events": "auto" });
-            this.previewContainer.empty().append($("<p>")
-                .addClass("text-muted")
-                .addClass("text-center")
-                .addClass("h6")
-                .text("Select Images to See Preview"));
+            window.location.href = `/ThePhotoAlbum/App/AlbumView?albumId=${albumId}`;
         });
     }
     showPreview() {
@@ -264,6 +262,13 @@ class PhotoPreviewManager {
             .addClass("text-danger"));
         this.previewContainer.append(animation);
     }
+    showSelectPhotos() {
+        this.previewContainer.empty().append($("<p>")
+            .addClass("text-muted")
+            .addClass("text-center")
+            .addClass("h6")
+            .text("Select Images to See Preview"));
+    }
 }
 class AlbumManager {
     constructor(params) {
@@ -338,9 +343,12 @@ class AlbumManager {
               <i class="fas fa-check-circle text-success"></i> Album <strong>${title}</strong> Created Successfully
           </div>`);
             this.modalContainer
-                .find(".modal-body")
-                .remove(".alert")
+                .find('.modal-body')
                 .append(nofication);
+            setTimeout(() => {
+                this.modalContainer.modal('hide');
+                this.modalContainer.find('.alert').remove();
+            }, 700);
         })
             .fail(() => {
             this.createAlbumBtn.removeClass("disabled").html(`Try Again`);
@@ -348,8 +356,8 @@ class AlbumManager {
           <i class="fas fa-times-circle  text-danger"></i> Failed To Create Album
           </div>`);
             this.modalContainer
-                .find(".modal-body")
-                .remove(".alert")
+                .find(".alert")
+                .remove()
                 .append(nofication);
         });
     }
@@ -368,7 +376,7 @@ class AlbumManager {
     }
 }
 $(() => {
-    let preview = new PhotoPreviewManager("photo_upload_input", "image-preview-container", 5);
+    let preview = new PhotoPreviewManager("photo_upload_input", "image-preview-container", 10);
     let albumManager = new AlbumManager({
         openBtnId: "album-create-btn",
         modalContainerId: "createAlbumModal",

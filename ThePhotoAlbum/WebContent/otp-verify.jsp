@@ -10,9 +10,10 @@
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 <title>Verify OTP</title>
 <import:bootstrap4_3 />
+<import:stylesheet file="index.css"/>
 </head>
 <body>
-	<comp:navigationbar />
+	<comp:navigationbarIndex/>
 
 	<!--Optional Alerts -->
 	<c:if test="${fn:length(alerts) gt 0}">

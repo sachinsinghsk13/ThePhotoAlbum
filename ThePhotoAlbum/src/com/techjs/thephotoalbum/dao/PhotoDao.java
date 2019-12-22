@@ -16,7 +16,8 @@ public interface PhotoDao {
 	Integer getTotalNoOfFavouritePhotos(Long userId) throws SQLException;
 	Photo getPhoto(Long photoId, Album album) throws SQLException;
 	Photo getPhoto(Long photoId, Long albumId, Long userId) throws SQLException;
-	void updatePhoto(Photo photo, Album album) throws SQLException;
+	void updatePhoto(Photo photo) throws SQLException;
 	void insertPhoto(Photo photo) throws SQLException;
-	void deletePhoto(Long photoId, Album album) throws SQLException;
+	void deletePhoto(Photo photo) throws SQLException;
+	void markFavourite(Photo photo) throws SQLException;
 }

@@ -121,7 +121,7 @@
 						<div class="form-row">
 							<div class="form-group col-lg-12">
 								<label for="">Full Name</label> <input type="text"
-									class="form-control" placeholder="e.g. Shivam Singhal"
+									class="form-control" placeholder="e.g. Rohan Singh"
 									id="reg-fullname" name="fullname" />
 							</div>
 						</div>
