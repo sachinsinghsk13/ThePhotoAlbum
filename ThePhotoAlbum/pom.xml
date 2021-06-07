@@ -91,7 +91,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
-			<version>1.1.2</version>
+			<version>1.2.0</version>
 		</dependency>
 		<!-- WEB SERVICE DEPENDENCIES -->
 		<!-- https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-server -->
